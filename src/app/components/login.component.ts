@@ -1,0 +1,95 @@
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import { UserService } from '../services/user.service';
+
+@Component({
+	selector: 'login',
+	templateUrl: '../views/login.html',
+	providers: [UserService]
+})
+export class LoginComponent implements OnInit{
+	public title: string;
+	public user;
+	public identity;
+	public token;
+
+	constructor(
+		private _route: ActivatedRoute,
+		private _router: Router,
+		private _userService: UserService
+	){
+		this.title = 'Identificate';
+		this.user = {
+			"email":"",
+			"password":"",
+			"gethash":"true"
+		};
+
+	}
+
+	ngOnInit(){
+		console.log('El componente login.component ha sido cargado!!');
+		//console.log(this._userService.getIdentity());
+		//console.log(this._userService.getToken());
+		this.logout();
+	}
+
+	logout() {
+		this._route.params.forEach((params: Params) => {
+			let logout = +params['id'];
+			if(logout == 1) {
+				localStorage.removeItem('identity');
+				localStorage.removeItem('token');
+
+				this.identity = null;
+				this.token = null;
+
+				window.location.href = '/login';
+			}
+		}); 
+	}
+
+	onSubmit(){
+		console.log(this.user);
+		
+		this._userService.signup(this.user).subscribe(
+			response => {
+				this.identity = response;
+				if(this.identity.length <= 1){
+					console.log('Error en el servidor');
+				}{
+					if(!this.identity.status){
+						localStorage.setItem('identity', JSON.stringify(this.identity));
+						console.log(JSON.parse(localStorage.getItem('identity')));
+						console.log(JSON.parse(localStorage.getItem('token')));
+
+						//GET TOKEN
+						this.user.getHash = null;
+						this._userService.signup(this.user).subscribe(
+							response => {
+								this.token = response;
+								if(this.token.length <= 1){
+									console.log('Error en el servidor');
+								}{
+									if(!this.token.status){
+										localStorage.setItem('token', JSON.stringify(this.token));
+
+										window.location.href = "/";
+									}									
+								}
+							},
+							error => {
+								console.log(<any>error);
+							}	
+						);
+						this.user.getHash = "true";
+
+					}
+				}
+			},
+			error => {
+				console.log(<any>error);
+			}	
+		);		
+	}
+}
