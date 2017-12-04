@@ -28,6 +28,13 @@
             Crear
           </a>
         </li>  
+
+        <li>
+          <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Documentos
+          </a>
+        </li>          
             
       </ul>
 

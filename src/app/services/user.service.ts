@@ -22,6 +22,14 @@ export class UserService{
 		return this._http.post(this.url+'/login', params, {headers: headers}).map(res => res.json());
 	}
 
+	returnidentity(token) {
+		let json = JSON.stringify(token);
+		let params = "token="+json;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		return this._http.post(this.url+'/returnidentity', params, {headers: headers}).map(res => res.json());
+	}
+
 	getIdentity() {
 		let identity = JSON.parse(localStorage.getItem('identity'));
 
