@@ -21,17 +21,17 @@ export class LoginComponent implements OnInit{
 		this.title = 'Identificate';
 		this.user = {
 			"email":"",
-			"password":"",
-			"gethash":"true"
+			"password":""
 		};
 
 	}
 
 	ngOnInit(){
 		console.log('El componente login.component ha sido cargado!!');
-		//console.log(this._userService.getIdentity());
-		//console.log(this._userService.getToken());
+		console.log(this._userService.getIdentity());
+		console.log(this._userService.getToken());
 		this.logout();
+		this.redirectIfIdentity();
 	}
 
 	logout() {
@@ -49,31 +49,38 @@ export class LoginComponent implements OnInit{
 		}); 
 	}
 
+	redirectIfIdentity() {
+		let identity = this._userService.getIdentity();
+		if(identity != null && identity.sub) {
+			this._router.navigate(["/"]);
+		}		
+	}
+
+
 	onSubmit(){
 		console.log(this.user);
 		
 		this._userService.signup(this.user).subscribe(
 			response => {
-				this.identity = response;
-				if(this.identity.length <= 1){
+				this.token = response;
+				if(this.token.length <= 1){
 					console.log('Error en el servidor');
 				}{
-					if(!this.identity.status){
-						localStorage.setItem('identity', JSON.stringify(this.identity));
-						console.log(JSON.parse(localStorage.getItem('identity')));
-						console.log(JSON.parse(localStorage.getItem('token')));
-
-						//GET TOKEN
-						this.user.getHash = null;
-						this._userService.signup(this.user).subscribe(
+					if(!this.token.status){
+						localStorage.setItem('token', JSON.stringify(this.token));
+						//console.log(JSON.parse(localStorage.getItem('token')));
+						console.log(localStorage.getItem('token'));
+						
+						//GET IDENTITY						
+						this._userService.returnidentity(this.token).subscribe(
 							response => {
-								this.token = response;
-								if(this.token.length <= 1){
+								this.identity = response;
+								if(this.identity.length <= 1){
 									console.log('Error en el servidor');
 								}{
-									if(!this.token.status){
-										localStorage.setItem('token', JSON.stringify(this.token));
-
+									if(!this.identity.status){
+										localStorage.setItem('identity', JSON.stringify(this.identity));
+										console.log(localStorage.getItem('identity'));	
 										window.location.href = "/";
 									}									
 								}
@@ -81,9 +88,7 @@ export class LoginComponent implements OnInit{
 							error => {
 								console.log(<any>error);
 							}	
-						);
-						this.user.getHash = "true";
-
+						);						
 					}
 				}
 			},
@@ -93,3 +98,4 @@ export class LoginComponent implements OnInit{
 		);		
 	}
 }
+
