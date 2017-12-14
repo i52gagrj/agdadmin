@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login.component';
 import { RegisterComponent } from './components/register.component';
 import { DocumentoComponent } from './components/documento.component';
+import { ModeloComponent } from './components/modelo.component';
+import { MensajeComponent } from './components/mensaje.component';
 import { DefaultComponent } from './components/default.component';
 
 @NgModule({
@@ -17,7 +19,9 @@ import { DefaultComponent } from './components/default.component';
     LoginComponent, 
     RegisterComponent,
     DefaultComponent,
-    DocumentoComponent 
+    DocumentoComponent,
+    ModeloComponent,
+    MensajeComponent 
   ],
   imports: [
     BrowserModule,
