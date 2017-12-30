@@ -9,30 +9,30 @@
       </button>
       
       <a class="navbar-brand" [routerLink]="['/']" >
-        LOGO
+        AGD
       </a> 
     </div>
 
     <div class="collapse navbar-collapse" id="menu">
       <ul class="nav navbar-nav">
         <li>
-          <a [routerLink]="['/']">
+          <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            Home
+            Documentos
           </a>
         </li>
 
         <li>
-          <a [routerLink]="['/']" *ngIf="identity && identity.sub">
+          <a [routerLink]="['/modelo']" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Crear
+            Modelos
           </a>
         </li>  
 
         <li>
-          <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
+          <a [routerLink]="['/mensaje']" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Documentos
+            Mensajes
           </a>
         </li> 
                           
@@ -42,9 +42,9 @@
         <li>
           <a [routerLink]="['/login']"> Login </a>
         </li>  
-        <li>  
+        <!--<li>  
           <a [routerLink]="['/register']"> Registro </a>
-        </li>
+        </li>-->
       </ul>
 
       <ul class="nav navbar-nav navbar-right" *ngIf="identity && identity.sub">
