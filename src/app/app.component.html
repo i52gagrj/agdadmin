@@ -34,8 +34,8 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Mensajes
           </a>
-        </li>          
-            
+        </li> 
+                          
       </ul>
 
       <ul class="nav navbar-nav navbar-right" *ngIf="!identity">
@@ -62,7 +62,11 @@
             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
             Salir
           </a>
-        </li>  
+        </li> 
+
+        <li>          
+            <a>{{identity.nombre}}</a>          
+        </li>          
       </ul>
     </div> 
   </div>
