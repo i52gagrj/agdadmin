@@ -18,12 +18,13 @@ export class DocumentoComponent implements OnInit{
 		private _router: Router,
 		//private _userService: UserService
 	){
-		this.title = 'Documentos del usuario';
+		this.title = 'Documentos';
 
 	}
 
 	ngOnInit(){
 		console.log('El componente documento.component ha sido cargado!!');
+		console.log('A por el bote!!!');
 
 	}
 
