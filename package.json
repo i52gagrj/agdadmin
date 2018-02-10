@@ -12,8 +12,8 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/core": "^0.2.9",
-    "@angular-devkit/schematics": "^0.3.4",
+    "@angular-devkit/core": "^0.3.1",
+    "@angular-devkit/schematics": "^0.3.1",
     "@angular/animations": "^4.2.4",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
@@ -30,8 +30,8 @@
     "ngx-uploader": "^4.2.2",
     "popper.js": "^1.12.9",
     "rxjs": "^5.4.2",
-    "zone.js": "^0.8.14", 
-    "ts-helpers": "^1.1.2"
+    "ts-helpers": "^1.1.2",
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular/cli": "1.4.9",
