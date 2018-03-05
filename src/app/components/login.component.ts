@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit{
 									if(!this.identity.status){
 										localStorage.setItem('identity', JSON.stringify(this.identity));
 										console.log(localStorage.getItem('identity'));	
-										window.location.href = "/";
+										window.location.href = '/documento';
 									}									
 								}
 							},
