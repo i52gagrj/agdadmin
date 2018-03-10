@@ -13,6 +13,8 @@ import { ModeloComponent } from './components/modelo.component';
 import { MensajeComponent } from './components/mensaje.component';
 import { DefaultComponent } from './components/default.component';
 
+import { NgUploaderModule } from 'ngx-uploader';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,15 +23,17 @@ import { DefaultComponent } from './components/default.component';
     DefaultComponent,
     DocumentoComponent,
     ModeloComponent,
-    MensajeComponent 
+    MensajeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,    
-    routing
+    routing,
+		NgUploaderModule 
   ],
   providers: [ appRoutingProviders ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+	exports: [ AppComponent ]
 })
 export class AppModule { }
