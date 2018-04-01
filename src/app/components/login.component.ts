@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit{
 		this.title = 'Identificate';
 		this.user = {
 			"email":"",
-			"password":""
+			"password":"",
+            "gethash":"false"
 		};
 
 	}
