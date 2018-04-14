@@ -13,7 +13,6 @@ export class DefaultComponent implements OnInit{
 		private _router: Router
 	){
 		this.title = 'Homepage';
-
 	}
 
 	ngOnInit(){

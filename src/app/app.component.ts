@@ -20,6 +20,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-  console.log("app.component cargado");
+    console.log("app.component cargado");
   }
 }
