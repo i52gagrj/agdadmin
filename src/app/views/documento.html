@@ -1,22 +1,42 @@
-<h3>{{title}}</h3>
+<div class="col-md-12" *ngIf="identity && identity.sub">
+    <!-- MOSTRAR BUSCADOR -->
 
-<p>Indique el documento a subir y su descripción</p>
-<form>
-    Descripcion:<br>
-    <input type="text" name="descripcion"><br>
-    Fichero:<br>
-    <input type="file" name="fichero">
-    <input type="submit">
-</form>
-<p>Lista de documentos guardados</p>
-<ul>
-    <li>
-        Documento 1
-    </li>
-    <li>
-        Documento 2
-    </li>
-    <li>
-        Documento 3
-    </li>
-</ul>
+    <div class="all-tasks">
+        <div class="loader" *ngIf="loading == 'show'">
+            <img src="assets/img/loader.gif" />
+        </div>
+
+        <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
+            <tr>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Enlace</th>
+            </tr>
+
+            <tr *ngFor="let documento of documentos" class="documento-item">
+                <td>						
+                    <h4>
+                        {{documento.descripcion}}
+                    </h4>
+                </td>
+                <td>
+                    <h4>
+                        <a>{{documento.tipo}}</a>
+                    </h4>
+                </td>
+                <td>
+                    <a link="#" class="btn btn-warning"> Descargar </a>
+                </td>
+            </tr>
+            
+        </table>
+
+        <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
+            <div class="clearfix"></div>
+            <div class="alert alert-warning">
+                No se han encontrado documentos, creelos
+            </div>
+        </div>
+
+    </div>
+</div>

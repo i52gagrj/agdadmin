@@ -24,12 +24,9 @@ export class DocumentoComponent implements OnInit {
 		// private _userService: UserService
 	) {
 		this.title = 'Documentos';
-
 	}
 
 	ngOnInit() {
-		console.log('El componente documento.component ha sido cargado!!');
-		console.log('A por el bote!!!');
-
+		console.log('El componente documento.component ha sido cargado!!');	
 	}
 }
