@@ -1,42 +1,66 @@
-<div class="col-md-12" *ngIf="identity && identity.sub">
-    <!-- MOSTRAR BUSCADOR -->
+<div class="col-md-12">
+    <div *ngIf="!identity || identity == null">
+        Inicia sesión para acceder a más opciones
+    </div>
 
-    <div class="all-tasks">
-        <div class="loader" *ngIf="loading == 'show'">
-            <img src="assets/img/loader.gif" />
-        </div>
+    <div class="col-md-12" *ngIf="identity && identity.sub">
 
-        <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
-            <tr>
-                <th>Descripción</th>
-                <th>Tipo</th>
-                <th>Enlace</th>
-            </tr>
-
-            <tr *ngFor="let documento of documentos" class="documento-item">
-                <td>						
-                    <h4>
-                        {{documento.descripcion}}
-                    </h4>
-                </td>
-                <td>
-                    <h4>
-                        <a>{{documento.tipo}}</a>
-                    </h4>
-                </td>
-                <td>
-                    <a link="#" class="btn btn-warning"> Descargar </a>
-                </td>
-            </tr>
-            
-        </table>
-
-        <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
-            <div class="clearfix"></div>
-            <div class="alert alert-warning">
-                No se han encontrado documentos, creelos
+        <div class="all-documents">
+            <div class="loader" *ngIf="loading == 'show'">
+                <img src="assets/img/loader.gif" />
             </div>
-        </div>
 
+            <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
+                <tr>
+                    <th>Descripción</th>
+                    <th>Tipo</th>
+                    <th>Enlace</th>
+                </tr>
+
+                <tr *ngFor="let documento of documentos" class="documento-item">
+                    <td>						
+                        <h4>
+                            {{documento.descripcion}}
+                        </h4>
+                    </td>
+                    <td>
+                        <h4>
+                            {{documento.tipo}}
+                        </h4>
+                    </td>
+                    <td>
+                        <a link="#" class="btn btn-warning"> Descargar </a>
+                    </td>
+                </tr>
+                
+            </table>
+
+            <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
+                <div class="clearfix"></div>
+                <div class="alert alert-warning">
+                    No se han encontrado documentos, creelos
+                </div>
+            </div>
+
+			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
+				<li>
+					<a [routerLink]="['/documento', pagePrev]" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+
+				<li *ngFor="let page of pages">  
+					<a [routerLink]="['/documento', page+1]">{{page+1}} </a>
+				</li>
+
+				<li>
+					<a [routerLink]="['/documento', pageNext]" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>             
+           
+
+        </div>
     </div>
 </div>

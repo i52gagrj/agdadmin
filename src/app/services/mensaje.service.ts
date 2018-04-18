@@ -14,5 +14,22 @@ export class MensajeService{
 		this.url = GLOBAL.url;
 	}
 	
+    create(token, mensaje) {
+		let json = JSON.stringify(mensaje);
+		let params = "json="+json+"&authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		
+		return this._http.post(this.url+'/mensaje/new', params).map(res => res.json());
+	}	
+	
+	getMensajes(token, page = null){
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
+		if(page == null) {
+			page=1;
+		}
+
+		return this._http.post(this.url+'/mensaje/listall?page='+page , params, {headers: headers}).map(res => res.json());
+    }	
 }	

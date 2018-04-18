@@ -14,8 +14,11 @@ const appRoutes: Routes = [
 	{path:'login/:id', component: LoginComponent},
 	{path:'register', component: RegisterComponent},
 	{path:'documento', component: DocumentoComponent},
+	{path:'documento/:page', component: DocumentoComponent},
 	{path:'modelo', component: ModeloComponent},
+	{path:'modelo/:page', component: ModeloComponent},
 	{path:'mensaje', component: MensajeComponent},
+	{path:'mensaje/:page', component: MensajeComponent},
 	{path:'**', component: LoginComponent} 
 ];
 

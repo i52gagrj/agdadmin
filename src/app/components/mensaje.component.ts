@@ -1,30 +1,87 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-//import { UserService } from '../services/user.service';
+import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { Http, Response, Request, RequestMethod } from '@angular/http';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
+//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
+import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
+import { Mensaje } from '../models/mensaje';
+import { UserService } from '../services/user.service';
+import { MensajeService } from '../services/mensaje.service';
 
 @Component({
 	selector: 'mensaje',
-	templateUrl: '../views/mensaje.html'/*,
-	providers: [UserService]*/
+	templateUrl: '../views/mensaje.html',
+	providers: [UserService, MensajeService]
 })
 export class MensajeComponent implements OnInit{
-	public title: string;
-	//public user;
-	//public identity;
-	//public token;
+    public title: string;
+    public identity;
+    public token;
+    public mensajes: Array<Mensaje>;
+    public pages;
+    public pagePrev;
+    public pageNext;
+    public loading;
 
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
-		//private _userService: UserService
+		private _userService: UserService,
+		private _mensajeService: MensajeService
 	){
-		this.title = 'Mensajes del usuario';
+		this.title = 'Mensajes';
+        this.identity = this._userService.getIdentity();  
+        this.token = this._userService.getToken();  
 
 	}
 
 	ngOnInit(){
-		console.log('El componente mensaje.component ha sido cargado!!');
-
+		console.log('El componente modelo.component ha sido cargado!!');
+		this.mostrarTodosMensajes();
 	}
 
+	mostrarTodosMensajes(){
+        this._route.params.forEach((params: Params) => {
+            let page = +params['page'];
+
+            if(!page){
+                page = 1;
+            }
+
+            this.loading = 'show'
+            this._mensajeService.getMensajes(this.token, page).subscribe(
+                response => {
+                    this.mensajes = response.data;
+                    console.log(response);
+                    console.log(this.identity.sub);
+                    this.loading = 'hide';
+
+                    // Total paginas
+                    this.pages = [];
+                    for(let i = 0; i < response.total_pages; i++){
+                        this.pages.push(i);                        
+                    }
+
+                    // Pagina anterior
+                    if(page >= 2){
+                        this.pagePrev = (page - 1);
+                    }else{
+                        this.pagePrev = page;                        
+                    }  
+
+                    // Pagina siguiente
+                    if(page < response.total_pages){
+                        this.pageNext = (page+1);
+                    }else{
+                        this.pageNext = page;
+                    }
+                },
+                error => {
+                    console.log(<any>error);
+                }
+            );
+        }); 
+        console.log(this.loading);
+    }
 }	

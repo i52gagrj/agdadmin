@@ -1,1 +1,49 @@
-<h3>{{title}}</h3>
+<div class="col-md-12">
+    <div *ngIf="!identity || identity == null">
+        Inicia sesión para acceder a más opciones
+    </div>
+
+    <div class="col-md-12" *ngIf="identity && identity.sub">
+
+        <div class="all-mensajes">
+            <div class="loader" *ngIf="loading == 'show'">
+                <img src="assets/img/loader.gif" />
+            </div>
+
+            <table class="table table-hover table-stripped" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" >
+                <tr>
+                    <th>Emisor</th>
+                    <th>Receptor</th>
+                    <th>Texto</th>
+                </tr>
+
+                <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
+                    <td>						
+                        <h4>
+                            {{mensaje.emisor}}
+                        </h4>
+                    </td>
+                    <td>						
+                        <h4>
+                            {{mensaje.receptor}}
+                        </h4>
+                    </td>
+                    <td>						
+                        <h4>
+                            {{mensaje.texto}}
+                        </h4>
+                    </td> 
+                </tr>
+                
+            </table>
+
+            <div class="col-md-12" *ngIf="loading != 'show' && !mensajes">
+                <div class="clearfix"></div>
+                <div class="alert alert-warning">
+                    No se han encontrado mensajes
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

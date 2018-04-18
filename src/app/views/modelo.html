@@ -1,13 +1,65 @@
-<h3>{{title}}</h3>
-<p>Lista de modelos guardados</p>
-<ul>
-    <li>
-        Modelo 1
-    </li>
-    <li>
-        Modelo 2
-    </li>
-    <li>
-        Modelo 3
-    </li>
-</ul>
+<div class="col-md-12">
+    <div *ngIf="!identity || identity == null">
+        Inicia sesión para acceder a más opciones
+    </div>
+
+    <div class="col-md-12" *ngIf="identity && identity.sub">
+
+        <div class="all-models">
+            <div class="loader" *ngIf="loading == 'show'">
+                <img src="assets/img/loader.gif" />
+            </div>
+
+            <table class="table table-hover table-stripped" id="models-list" *ngIf="modelos && modelos.length >= 1" >
+                <tr>
+                    <th>Descripción</th>
+                    <th>Código</th>
+                    <th>Trimestre</th>
+                    <th>Ejercicio</th>                    
+                    <th>Tipo</th>
+                    <th>Enlace</th>
+                </tr>
+
+                <tr *ngFor="let modelo of modelos" class="modelos-item">
+                    <td>						
+                        <h4>
+                            {{modelo.descripcion}}
+                        </h4>
+                    </td>
+                    <td>						
+                        <h4>
+                            {{modelo.codigo}}
+                        </h4>
+                    </td>
+                    <td>						
+                        <h4>
+                            {{modelo.trimestre}}
+                        </h4>
+                    </td> 
+                    <td>						
+                        <h4>
+                            {{modelo.ejercicio}}
+                        </h4>
+                    </td>                                                           
+                    <td>
+                        <h4>
+                            <a>{{modelo.tipo}}</a>
+                        </h4>
+                    </td>
+                    <td>
+                        <a link="#" class="btn btn-warning"> Descargar </a>
+                    </td>
+                </tr>
+                
+            </table>
+
+            <div class="col-md-12" *ngIf="loading != 'show' && !modelos">
+                <div class="clearfix"></div>
+                <div class="alert alert-warning">
+                    No se han encontrado modelos
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
