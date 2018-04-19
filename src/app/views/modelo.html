@@ -60,6 +60,24 @@
                 </div>
             </div>
 
+			<ul class="pagination" *ngIf="modelos && modelos.length >= 1">
+				<li>
+					<a [routerLink]="['/modelo', pagePrev]" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+
+				<li *ngFor="let page of pages">  
+					<a [routerLink]="['/modelo', page+1]">{{page+1}} </a>
+				</li>
+
+				<li>
+					<a [routerLink]="['/modelo', pageNext]" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>            
+
         </div>
     </div>
 </div>
