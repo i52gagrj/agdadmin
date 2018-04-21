@@ -1,0 +1,34 @@
+<div class="col-md-12">
+	<div class="loader" *ngIf="loading == 'show'">
+		<img src="assets/img/loader.gif" />
+	</div>	
+
+	<div class="col-md-12" *ngIf="!loading || documento">
+		<h3>{{page_title}}</h3>
+
+		<div class="alert alert-success" *ngIf="status_documento == 'success'">
+			El documento se ha creado correctamente		
+		</div>
+		
+		<div class="alert alert-danger" *ngIf="status_documento == 'error'" >
+			¡El documento NO se ha creado!
+		</div>
+
+		<form #documentoNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+			<p> 
+				<label>Descripcion</label>
+				<input type="text" class="form-control" name="documentodescripcion" #tasktitle="ngModel" [(ngModel)]="documento.descripcion" required />
+				<span *ngIf="!documentodescripcion.valid && documentodescripcion.touched">La descripción no es correcta</span>
+			</p>	        
+			
+			<p> 
+				<label>Fichero</label>
+				<input type="file" class="form-control-file" name="file" #tasktitle="ngModel" [(ngModel)]="file" required />			
+			</p>				
+
+			<input type="submit" value="{{page_title}}" class="btn btn-success" [disabled]="!documentoNewForm.form.valid" />
+        </form>
+
+	</div>
+
+</div>

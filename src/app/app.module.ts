@@ -9,8 +9,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login.component';
 import { RegisterComponent } from './components/register.component';
 import { DocumentoComponent } from './components/documento.component';
+import { DocumentoNewComponent } from './components/documento.new.component';
 import { ModeloComponent } from './components/modelo.component';
 import { MensajeComponent } from './components/mensaje.component';
+import { MensajeNewComponent } from './components/mensaje.new.component';
 import { DefaultComponent } from './components/default.component';
 
 import { NgUploaderModule } from 'ngx-uploader';
@@ -22,8 +24,10 @@ import { NgUploaderModule } from 'ngx-uploader';
     RegisterComponent,
     DefaultComponent,
     DocumentoComponent,
+    DocumentoNewComponent,
     ModeloComponent,
-    MensajeComponent
+    MensajeComponent,
+    MensajeNewComponent
   ],
   imports: [
     BrowserModule,

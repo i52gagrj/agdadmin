@@ -1,0 +1,29 @@
+<div class="col-md-12">
+	<div class="loader" *ngIf="loading == 'show'">
+		<img src="assets/img/loader.gif" />
+	</div>	
+
+	<div class="col-md-12" *ngIf="!loading || mensaje">
+		<h3>{{page_title}}</h3>
+
+		<div class="alert alert-success" *ngIf="status_mensaje == 'success'">
+			El mensaje se ha creado correctamente		
+		</div>
+		
+		<div class="alert alert-danger" *ngIf="status_mensaje == 'error'" >
+			¡El mensaje NO se ha creado!
+		</div>
+
+		<form #mensajeNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+			<p> 
+				<label>Descripcion</label>
+				<input type="text" class="form-control" name="mensajetexto" #tasktitle="ngModel" [(ngModel)]="mensaje.texto" required />
+				<span *ngIf="!mensajetexto.valid && mensajetexto.touched">La descripción no es correcta</span>
+			</p>	        			
+
+			<input type="submit" value="{{page_title}}" class="btn btn-success" [disabled]="!mensajeNewForm.form.valid" />
+        </form>
+
+	</div>
+
+</div>

@@ -60,7 +60,13 @@
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-			</ul>            
+            </ul>  
+            
+            <div>
+                <a [routerLink]="['/mensaje-new']" *ngIf="identity && identity.sub">                    
+                    Crear mensaje
+                  </a>
+            </div>
 
         </div>
     </div>

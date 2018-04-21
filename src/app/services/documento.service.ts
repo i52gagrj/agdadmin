@@ -16,11 +16,23 @@ export class DocumentoService{
 
     create(token, documento, file) {
 		let json = JSON.stringify(documento);
-		let params = "json="+json+"&authorization="+token+"&file="+file;
+		const formData = new FormData;
+		formData.append('file', file);
+		formData.append('authorization', token);
+		formData.append('json', json);
+
+		//let params = "json="+json+" authorization="+token+" file="+file;
 		//let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		//return this._http.post(this.url+'/documento/new', params, {headers: headers}).map(res => res.json());
-		return this._http.post(this.url+'/documento/new', params).map(res => res.json());
+		//return this._http.post(this.url+'/documento/new', params).map(res => res.json());
+		return this._http.post(this.url+'/documento/new', formData).map(res => res.json());		
+
+		/*let json = JSON.stringify(documento);
+		let params = "json="+json+" authorization="+token+" file="+file;
+		let headers = new Headers({'Content-Type':'application/json'});
+
+		return this._http.post(this.url+'/documento/new', params, {headers: headers}).map(res => res.json());*/
+		//return this._http.post(this.url+'/documento/new', params).map(res => res.json());
 	}	
 	
 	getDocumentos(token, page = null){
