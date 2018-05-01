@@ -37,44 +37,52 @@ export class MensajeComponent implements OnInit{
 	}
 
 	ngOnInit(){
-		console.log('El componente modelo.component ha sido cargado!!');
-		this.mostrarTodosMensajes();
+        console.log('El componente mensaje.component ha sido cargado!!');        
+        this.mostrarTodosMensajes();        
 	}
 
 	mostrarTodosMensajes(){
         this._route.params.forEach((params: Params) => {
-            let page = +params['page'];
+            let page = +params['page'];            
 
             if(!page){
                 page = 1;
-            }
+            }            
 
-            this.loading = 'show'
+            this.loading = 'show';            
             this._mensajeService.getMensajes(this.token, page).subscribe(
                 response => {
-                    this.mensajes = response.data;
-                    console.log(response);
-                    console.log(this.identity.sub);
-                    this.loading = 'hide';
-
-                    // Total paginas
-                    this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
+                    if(response.code == 405){
+                        console.log("Token caducado. Reiniciar sesión")
+                        this._userService.logout();
+                        this.identity = null;
+                        this.token = null;
+                        window.location.href = '/login';                        
                     }
+                    else{                     
+                        this.mensajes = response.data;
+                        this.token = this._userService.setToken(response.token);                 
+                        this.loading = 'hide';
 
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
+                        // Total paginas
+                        this.pages = [];
+                        for(let i = 0; i < response.total_pages; i++){
+                            this.pages.push(i);                        
+                        }
 
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
+                        // Pagina anterior
+                        if(page >= 2){
+                            this.pagePrev = (page - 1);
+                        }else{
+                            this.pagePrev = page;                        
+                        }  
+
+                        // Pagina siguiente
+                        if(page < response.total_pages){
+                            this.pageNext = (page+1);
+                        }else{
+                            this.pageNext = page;
+                        }
                     }
                 },
                 error => {
@@ -82,6 +90,7 @@ export class MensajeComponent implements OnInit{
                 }
             );
         }); 
-        console.log(this.loading);
+        //console.log(this.loading);
     }
+    
 }	

@@ -16,6 +16,7 @@ import { MensajeNewComponent } from './components/mensaje.new.component';
 import { DefaultComponent } from './components/default.component';
 
 import { NgUploaderModule } from 'ngx-uploader';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NgUploaderModule } from 'ngx-uploader';
     FormsModule,
     HttpModule,    
     routing,
-		NgUploaderModule 
+    NgUploaderModule,
+    FileUploadModule
   ],
   providers: [ appRoutingProviders ],
   bootstrap: [ AppComponent ],

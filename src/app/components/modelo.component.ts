@@ -49,39 +49,46 @@ export class ModeloComponent implements OnInit{
                 page = 1;
             }
 
-            this.loading = 'show'
+            this.loading = 'show';            
             this._modeloService.getModelos(this.token, page).subscribe(
                 response => {
-                    this.modelos = response.data;
-                    console.log(response);
-                    console.log(this.identity.sub);
-                    this.loading = 'hide';
-
-                    // Total paginas
-                    this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
+                    if(response.code == 405){
+                        console.log("Token caducado. Reiniciar sesión")
+                        this._userService.logout();
+                        this.identity = null;
+                        this.token = null;
+                        window.location.href = '/login';                        
                     }
+                    else{                     
+                        this.modelos = response.data;
+                        this.token = this._userService.setToken(response.token);
+                        this.loading = 'hide';
 
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
+                        // Total paginas
+                        this.pages = [];
+                        for(let i = 0; i < response.total_pages; i++){
+                            this.pages.push(i);                        
+                        }
 
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
+                        // Pagina anterior
+                        if(page >= 2){
+                            this.pagePrev = (page - 1);
+                        }else{
+                            this.pagePrev = page;                        
+                        }  
+
+                        // Pagina siguiente
+                        if(page < response.total_pages){
+                            this.pageNext = (page+1);
+                        }else{
+                            this.pageNext = page;
+                        }
                     }
                 },
                 error => {
                     console.log(<any>error);
                 }
             );
-        }); 
-        console.log(this.loading);
+        });         
     }
 }	

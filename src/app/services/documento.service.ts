@@ -16,23 +16,13 @@ export class DocumentoService{
 
     create(token, documento, file) {
 		let json = JSON.stringify(documento);
+
 		const formData = new FormData;
 		formData.append('file', file);
 		formData.append('authorization', token);
 		formData.append('json', json);
-
-		//let params = "json="+json+" authorization="+token+" file="+file;
-		//let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
-
-		//return this._http.post(this.url+'/documento/new', params).map(res => res.json());
-		return this._http.post(this.url+'/documento/new', formData).map(res => res.json());		
-
-		/*let json = JSON.stringify(documento);
-		let params = "json="+json+" authorization="+token+" file="+file;
-		let headers = new Headers({'Content-Type':'application/json'});
-
-		return this._http.post(this.url+'/documento/new', params, {headers: headers}).map(res => res.json());*/
-		//return this._http.post(this.url+'/documento/new', params).map(res => res.json());
+				
+		return this._http.post(this.url+'/documento/new', formData).map(res => res.json());
 	}	
 	
 	getDocumentos(token, page = null){
@@ -58,19 +48,18 @@ export class DocumentoService{
 		return this._http.post(this.url+'/documento/listall?page='+page , params, {headers: headers}).map(res => res.json());
     }*/
 
-    /*getDocumento(token, id){
-		let params = "authorization="+token;
+    getDocumento(token, id){
+		let params = "authorization="+token+"&id="+id;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 		
-		return this._http.post(this.url+'/documento/returnone/'+id , params, {headers: headers}).map(res => res.json());
-	}*/
+		return this._http.post(this.url+'/documento/returnone', params, {headers: headers}).map(res => res.json());
+	}
 	
-	/*deleteTask(token, id){
-        //console.log("Has dado click a borrar");
-        let params = "authorization="+token;
+	borrarDocumento(token, id){        
+        let params = "authorization="+token+"&id="+id;
         let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
         
-        return this._http.post(this.url+'/task/remove/'+id , params, {headers: headers}).map(res => res.json());
-    }*/
+        return this._http.post(this.url+'/documento/delete', params, {headers: headers}).map(res => res.json());
+    }
 }
 	

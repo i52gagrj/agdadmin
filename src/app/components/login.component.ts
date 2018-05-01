@@ -21,16 +21,13 @@ export class LoginComponent implements OnInit{
 		this.title = 'Identificate';
 		this.user = {
 			"email":"",
-			"password":"",
-            "gethash":"false"
+			"password":""
 		};
 
 	}
 
 	ngOnInit(){
 		console.log('El componente login.component ha sido cargado!!');
-		console.log(this._userService.getIdentity());
-		console.log(this._userService.getToken());
 		this.logout();
 		this.redirectIfIdentity();
 	}
@@ -39,12 +36,17 @@ export class LoginComponent implements OnInit{
 		this._route.params.forEach((params: Params) => {
 			let logout = +params['id'];
 			if(logout == 1) {
-				localStorage.removeItem('identity');
-				localStorage.removeItem('token');
-
+				this._userService.logout2().subscribe(            
+					response => {                                     
+						console.log("fin")
+					},
+					error => {
+						console.log(<any>error)                
+					}
+				);
+				this._userService.logout();
 				this.identity = null;
 				this.token = null;
-
 				window.location.href = '/login';
 			}
 		}); 
@@ -58,9 +60,7 @@ export class LoginComponent implements OnInit{
 	}
 
 
-	onSubmit(){
-		console.log(this.user);
-		
+	onSubmit(){				
 		this._userService.signup(this.user).subscribe(
 			response => {
 				this.token = response;
@@ -69,8 +69,6 @@ export class LoginComponent implements OnInit{
 				}{
 					if(!this.token.status){
 						localStorage.setItem('token', JSON.stringify(this.token));
-						//console.log(JSON.parse(localStorage.getItem('token')));
-						console.log(localStorage.getItem('token'));
 						
 						//GET IDENTITY						
 						this._userService.returnidentity(this.token).subscribe(
@@ -80,8 +78,7 @@ export class LoginComponent implements OnInit{
 									console.log('Error en el servidor');
 								}{
 									if(!this.identity.status){
-										localStorage.setItem('identity', JSON.stringify(this.identity));
-										console.log(localStorage.getItem('identity'));	
+										localStorage.setItem('identity', JSON.stringify(this.identity));										
 										window.location.href = '/documento';
 									}									
 								}

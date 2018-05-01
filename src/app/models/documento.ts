@@ -4,7 +4,7 @@ export class Documento{
 		public descripcion: string,
         public ruta: string,
         public tipo: string,
-        public usuario: number,
+		public usuario: number,		
 		public fechahora		
 	){}
 }

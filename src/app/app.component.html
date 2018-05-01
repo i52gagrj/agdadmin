@@ -14,13 +14,28 @@
     </div>
 
     <div class="collapse navbar-collapse" id="menu">
-      <ul class="nav navbar-nav">
-        <li>
-          <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            Documentos
+      <ul class="nav navbar-nav">        
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" *ngIf="identity && identity.sub">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Documentos 
+            <span class="caret"></span>           
           </a>
-        </li>
+          <ul class="dropdown-menu">
+            <li>          
+              <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Lista de Documentos
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/documento-new']" *ngIf="identity && identity.sub">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Añadir Documento
+              </a>
+            </li>
+          </ul>
+        </li>  
 
         <li>
           <a [routerLink]="['/modelo']" *ngIf="identity && identity.sub">
@@ -29,12 +44,27 @@
           </a>
         </li>  
 
-        <li>
-          <a [routerLink]="['/mensaje']" *ngIf="identity && identity.sub">
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            Mensajes
+            Mensajes 
+            <span class="caret"></span>           
           </a>
-        </li> 
+          <ul class="dropdown-menu">
+            <li>          
+              <a [routerLink]="['/mensaje']" *ngIf="identity && identity.sub">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Lista de Mensajes
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/mensaje-new']" *ngIf="identity && identity.sub">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Añadir Mensaje
+              </a>
+            </li>
+          </ul>
+        </li>  
                           
       </ul>
 

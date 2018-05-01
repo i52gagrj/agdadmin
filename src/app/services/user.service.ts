@@ -43,7 +43,7 @@ export class UserService{
 	}
 
 	getToken() {
-		let token = JSON.parse(localStorage.getItem('token'));
+		let token = JSON.parse(localStorage.getItem('token'));		
 
 		if(token != "undefined"){
 			this.token = token;
@@ -52,6 +52,27 @@ export class UserService{
 		}
 
 		return token;
-	}	
+	}
+
+	setToken(nuevotoken) {
+		localStorage.setItem('token', JSON.stringify(nuevotoken));
+		this.token = JSON.parse(localStorage.getItem('token'));
+
+		return this.token;
+	}
+
+	logout(){
+		localStorage.removeItem('identity');
+		localStorage.removeItem('token');
+	}
+
+	logout2() {
+		let token = JSON.parse(localStorage.getItem('token'));
+
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		
+		return this._http.post(this.url+'/logout', params, {headers: headers}).map(res => res.json());
+	}
 
 }	

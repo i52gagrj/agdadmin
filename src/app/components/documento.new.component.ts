@@ -4,6 +4,7 @@ import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
 
+
 @Component({
     selector: 'documento-new',
     templateUrl: '../views/documento.new.html',
@@ -13,19 +14,21 @@ export class DocumentoNewComponent implements OnInit {
     public page_title: string;
     public identity;
     public token;
-    public file: File;
+    public file: File;    
     public documento: Documento;
     public status_documento;
+    
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
         private _userService: UserService,
-        private _documentoService: DocumentoService        
+        private _documentoService: DocumentoService      
     ){
-        this.page_title = 'Crear nueva tarea';
+        this.page_title = 'Añadir un nuevo documento';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();
+        //this.url = GLOBAL.url;
     }
 
     ngOnInit(){
@@ -33,26 +36,40 @@ export class DocumentoNewComponent implements OnInit {
             this._router.navigate(['/login']);
         }else {
             this.documento = new Documento(1, "", "", "", this.identity.sub, "null");
-        }        
+        }   
+        console.log('El componente documento.new.component ha sido cargado!!');     
+    }
+
+    fileChange(event) {
+        let fileList: FileList = event.target.files;
+        if(fileList.length > 0) {
+            this.file = fileList[0];            
+        }
     }
 
     onSubmit(){
-        console.log(this.documento);
-        
         this._documentoService.create(this.token, this.documento, this.file).subscribe(            
             response => {
-                console.log(this.file);
-                this.status_documento = response.status;
-                console.log(this.status_documento);
-                if(this.status_documento != 'success'){
-                    this.status_documento = 'error';
-                }else{
-                    this.documento = response.data;
-                    this._router.navigate(['/documento']);
-                }                
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                                                         
+                    this.status_documento = response.status;
+                    this.token = this._userService.setToken(response.token);                     
+                    if(this.status_documento != 'success'){
+                        this.status_documento = 'error';
+                    }else{
+                        this.documento = response.data;
+                        this._router.navigate(['/documento']);
+                    }     
+                }               
             },
             error => {
-                console.log(<any>error)
+                console.log(<any>error)                
             }
         );
     }

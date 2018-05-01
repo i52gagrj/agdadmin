@@ -17,16 +17,16 @@
 		<form #documentoNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
 			<p> 
 				<label>Descripcion</label>
-				<input type="text" class="form-control" name="documentodescripcion" #tasktitle="ngModel" [(ngModel)]="documento.descripcion" required />
+				<input type="text" class="form-control" name="documentodescripcion" #documentodescripcion="ngModel" [(ngModel)]="documento.descripcion" required />
 				<span *ngIf="!documentodescripcion.valid && documentodescripcion.touched">La descripción no es correcta</span>
 			</p>	        
 			
 			<p> 
-				<label>Fichero</label>
-				<input type="file" class="form-control-file" name="file" #tasktitle="ngModel" [(ngModel)]="file" required />			
+				<label>Fichero</label>				
+				<input type="file" (change)="fileChange($event)" class="form-control-file" name="filetoload"/>
 			</p>				
 
-			<input type="submit" value="{{page_title}}" class="btn btn-success" [disabled]="!documentoNewForm.form.valid" />
+			<input type="submit" value="Añadir" class="btn btn-primary" [disabled]="!documentoNewForm.form.valid" />
         </form>
 
 	</div>

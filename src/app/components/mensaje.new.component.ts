@@ -22,7 +22,7 @@ export class MensajeNewComponent implements OnInit {
         private _userService: UserService,
         private _mensajeService: MensajeService        
     ){
-        this.page_title = 'Crear nueva tarea';
+        this.page_title = 'Enviar nuevo mensaje';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();
     }
@@ -32,22 +32,30 @@ export class MensajeNewComponent implements OnInit {
             this._router.navigate(['/login']);
         }else {
             this.mensaje = new Mensaje(1, null, this.identity.sub, this.identity.admin, "null");
-        }        
+        }       
+        console.log('El componente mensaje.new.component ha sido cargado!!');         
     }
 
-    onSubmit(){
-        console.log(this.mensaje);
-        
+    onSubmit(){        
         this._mensajeService.create(this.token, this.mensaje).subscribe(
             response => {
-                this.status_mensaje = response.status;
-                console.log(this.status_mensaje);
-                if(this.status_mensaje != 'success'){
-                    this.status_mensaje = 'error';
-                }else{
-                    this.mensaje = response.data;
-                    this._router.navigate(['/mensaje']);
-                }                
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                   
+                    this.token = this._userService.setToken(response.token);              
+                    this.status_mensaje = response.status;                    
+                    if(this.status_mensaje != 'success'){
+                        this.status_mensaje = 'error';
+                    }else{
+                        this.mensaje = response.data;
+                        this._router.navigate(['/mensaje']);
+                    }
+                }                    
             },
             error => {
                 console.log(<any>error)
