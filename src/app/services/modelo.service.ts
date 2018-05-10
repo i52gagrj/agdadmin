@@ -16,15 +16,23 @@ export class ModeloService{
 	
     create(token, modelo, file) {
 		let json = JSON.stringify(modelo);
-		let params = "json="+json+"&authorization="+token+"&file="+file;
-		//let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		//return this._http.post(this.url+'/documento/new', params, {headers: headers}).map(res => res.json());
-		return this._http.post(this.url+'/modelo/new', params).map(res => res.json());
+		const formData = new FormData;
+		formData.append('file', file);
+		formData.append('authorization', token);
+		formData.append('json', json);
+				
+		return this._http.post(this.url+'/modelo/new', formData).map(res => res.json());		
 	}	
 	
-	getModelos(token, page = null){
-		let params = "authorization="+token;
+	getModelos(token, id, page = null){
+		let params;
+
+		if(id){
+			params = "authorization="+token+"&id="+id;
+		}else{
+			params = "authorization="+token;
+		}		
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
 		if(page == null) {

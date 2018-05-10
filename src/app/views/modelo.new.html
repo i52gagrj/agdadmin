@@ -1,0 +1,46 @@
+<div class="col-md-12">
+        <div class="loader" *ngIf="loading == 'show'">
+            <img src="assets/img/loader.gif" />
+        </div>	
+    
+        <div class="col-md-12" *ngIf="!loading || modelo">
+            <h3>{{page_title}}</h3>
+    
+            <div class="alert alert-success" *ngIf="status_modelo == 'success'">
+                El modelo se ha creado correctamente		
+            </div>
+            
+            <div class="alert alert-danger" *ngIf="status_modelo == 'error'" >
+                ¡El modelo NO se ha creado!
+            </div>
+    
+            <form #modeloNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+                <p> 
+                    <label>Descripcion</label>
+                    <input type="text" class="form-control" name="modelodescripcion" #modelodescripcion="ngModel" [(ngModel)]="modelo.descripcion" required />
+                    <span *ngIf="!modelodescripcion.valid && modelodescripcion.touched">La descripción no es correcta</span>
+                    <label>Codigo</label>
+                    <input type="text" class="form-control" name="modelocodigo" #modelocodigo="ngModel" [(ngModel)]="modelo.codigo" required />
+                    <span *ngIf="!modelocodigo.valid && modelocodigo.touched">La descripción no es correcta</span>
+                    <label>Trimestre</label>
+                    <input type="text" class="form-control" name="modelotrimestre" #modelotrimestre="ngModel" [(ngModel)]="modelo.trimestre" required />
+                    <span *ngIf="!modelotrimestre.valid && modelotrimestre.touched">La descripción no es correcta</span>
+                    <label>Ejercicio</label>
+                    <input type="text" class="form-control" name="modeloejercicio" #modeloejercicio="ngModel" [(ngModel)]="modelo.ejercicio" required />
+                    <span *ngIf="!modeloejercicio.valid && modeloejercicio.touched">La descripción no es correcta</span>
+                    <label>Usuario</label>
+                    <input type="text" class="form-control" name="modelousuario" #modelousuario="ngModel" [(ngModel)]="modelo.usuario" required />
+                    <span *ngIf="!modelousuario.valid && modelousuario.touched">La descripción no es correcta</span>                    
+                </p>	        
+                
+                <p> 
+                    <label>Fichero</label>				
+                    <input type="file" (change)="fileChange($event)" class="form-control-file" name="filetoload"/>
+                </p>				
+    
+                <input type="submit" value="Añadir" class="btn btn-primary" [disabled]="!modeloNewForm.form.valid" />
+            </form>
+    
+        </div>
+    
+    </div>

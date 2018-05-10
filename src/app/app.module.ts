@@ -11,12 +11,12 @@ import { RegisterComponent } from './components/register.component';
 import { DocumentoComponent } from './components/documento.component';
 import { DocumentoNewComponent } from './components/documento.new.component';
 import { ModeloComponent } from './components/modelo.component';
+import { ModeloNewComponent } from './components/modelo.new.component';
 import { MensajeComponent } from './components/mensaje.component';
 import { MensajeNewComponent } from './components/mensaje.new.component';
 import { DefaultComponent } from './components/default.component';
-
-import { NgUploaderModule } from 'ngx-uploader';
-import { FileUploadModule } from 'ng2-file-upload';
+import { ClienteComponent } from './components/cliente.component';
+import { ClienteNewComponent } from './components/cliente.new.component';
 
 @NgModule({
   declarations: [
@@ -27,16 +27,17 @@ import { FileUploadModule } from 'ng2-file-upload';
     DocumentoComponent,
     DocumentoNewComponent,
     ModeloComponent,
+    ModeloNewComponent,
     MensajeComponent,
-    MensajeNewComponent
+    MensajeNewComponent,
+    ClienteComponent,
+    ClienteNewComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,    
-    routing,
-    NgUploaderModule,
-    FileUploadModule
+    routing
   ],
   providers: [ appRoutingProviders ],
   bootstrap: [ AppComponent ],

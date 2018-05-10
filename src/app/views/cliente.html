@@ -1,0 +1,97 @@
+<div class="col-md-12">
+        <div *ngIf="!identity || identity == null">
+            Inicia sesión para acceder a más opciones
+        </div>
+    
+        <div class="col-md-12" *ngIf="identity && identity.sub" > 
+            <div *ngIf="mostrar">
+                <p> 			
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" name="clientenombre"/>         
+                </p>
+                <p>
+                    <button type="button" class="btn btn-pimary" (click)="revertir()">Ocultar</button>
+                </p>    
+            </div>  
+            <div *ngIf="!mostrar">
+                <p>
+                    <button type="button" class="btn btn-pimary" (click)="revertir()">Mostrar</button>
+                </p>
+            </div>                 
+        </div>
+
+        <div class="col-md-12" *ngIf="identity && identity.sub">
+            <div class="col-md-12" *ngIf="clienteE">
+                <th>Nombre: </th> 
+                <td>{{clienteE.nombre}} </td>                 
+                <td>  </td> 
+                <td><button type="button" class="btn btn-primary" (click)="anular()">Anular</button></td> 
+            </div>
+    
+            <div class="all-clientes">
+                <div class="loader" *ngIf="loading == 'show'">
+                    <img src="assets/img/loader.gif" />
+                </div>
+    
+                <table class="table table-hover table-stripped" id="clientes-list" *ngIf="clientes && clientes.length >= 1 && !clienteE" >
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th></th>                        
+                    </tr>
+    
+                    <tr *ngFor="let cliente of clientes" class="cliente-item">
+                        <td>						
+                            <h4>
+                                {{cliente.nombre}}
+                            </h4>
+                        </td>
+                        <td>
+                            <h4>
+                                {{cliente.email}}
+                            </h4>
+                        </td>    
+                        <td>						
+                            <h4>
+                                <button type="button" class="btn btn-pimary" (click)="seleccionar(cliente)">Seleccionar</button>
+                            </h4>
+                        </td>                                                                                    
+                    </tr>
+                    
+                </table>
+    
+                <div class="col-md-12" *ngIf="loading != 'show' && !clientes">
+                    <div class="clearfix"></div>
+                    <div class="alert alert-warning">
+                        No se han encontrado clientes
+                    </div>
+                </div>
+    
+                <ul class="pagination" *ngIf="clientes && clientes.length >= 1">
+                    <li>
+                        <a [routerLink]="['/cliente', pagePrev]" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+    
+                    <li *ngFor="let page of pages">  
+                        <a [routerLink]="['/cliente', page+1]">{{page+1}} </a>
+                    </li>
+    
+                    <li>
+                        <a [routerLink]="['/cliente', pageNext]" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>    
+                
+                <!-- <div>
+                    <a [routerLink]="['/cliente-new']" *ngIf="identity && identity.sub" class="btn btn-primary">                    
+                        Añadir cliente
+                      </a>
+                </div> -->
+               
+    
+            </div>
+        </div>
+    </div>

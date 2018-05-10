@@ -25,8 +25,14 @@ export class DocumentoService{
 		return this._http.post(this.url+'/documento/new', formData).map(res => res.json());
 	}	
 	
-	getDocumentos(token, page = null){
-		let params = "authorization="+token;
+	getDocumentos(token, id, page = null){
+		let params;
+
+		if(id){
+			params = "authorization="+token+"&id="+id;
+		}else{
+			params = "authorization="+token;
+		}
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
 		if(page == null) {

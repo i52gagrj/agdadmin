@@ -22,8 +22,14 @@ export class MensajeService{
 		return this._http.post(this.url+'/mensaje/new', params, {headers: headers}).map(res => res.json());
 	}	
 	
-	getMensajes(token, page = null){
-		let params = "authorization="+token;
+	getMensajes(token, id, page = null){
+		let params;
+
+		if(id){
+			params = "authorization="+token+"&id="+id;
+		}else{
+			params = "authorization="+token;
+		}
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
 		if(page == null) {

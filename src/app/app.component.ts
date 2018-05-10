@@ -11,15 +11,23 @@ export class AppComponent {
   public title = 'app works! ';
   public identity;
   public token;
+  public cliente = null;
 
   constructor(
     private _userService: UserService
   ) {
+
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
+
   }
 
   ngOnInit() {
     console.log("app.component cargado");
+    let prov = this._userService.getCliente();
+    if(prov){ this.cliente = prov;}
+    else{this.cliente = null;}
+    console.log(prov);
+    console.log(this.cliente);
   }
 }

@@ -2,49 +2,46 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Documento } from '../models/documento';
+import { Cliente } from '../models/cliente';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
 
 @Component({
-	selector: 'documento',
-	templateUrl: '../views/documento.html',
+	selector: 'cliente',
+	templateUrl: '../views/cliente.html',
 	providers: [UserService, DocumentoService]
 })
-export class DocumentoComponent implements OnInit {
+export class ClienteComponent implements OnInit {
     public title: string;
     public identity;
     public token;
-    public documentos: Array<Documento>;
-    public status_documento;
+    public clientes: Array<Cliente>;
+    //public status_documento;
     public pages;
     public pagePrev;
     public pageNext;
     public loading;
     public id;
-    public documento;
-    public cliente;
-    public file: File;
+    public clienteE;
+    //public documento;
+    public mostrar = false;
 
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _userService: UserService,
-		private _documentoService: DocumentoService
+		private _userService: UserService
 	) {
-		this.title = 'Documentos';
+		this.title = 'Clientes';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();  
-        this.cliente = null;
 	}
 
 	ngOnInit() {
-        console.log('El componente documento.component ha sido cargado!!');	
-        this.cargarCliente();    
-        this.mostrarTodosDocumentos();                    
+		console.log('El componente documento.component ha sido cargado!!');	
+        this.mostrarTodosClientes();
     }
 
-    mostrarTodosDocumentos(){
+    mostrarTodosClientes(){        
         this._route.params.forEach((params: Params) => {
             let page = +params['page'];
 
@@ -52,18 +49,12 @@ export class DocumentoComponent implements OnInit {
                 page = 1;
             }
 
-            let cliente = this._userService.getCliente();
-            if(cliente != null){
-                this.cliente = cliente.id;
-            }else{
-                this.cliente = null;
-            } 
-                        
-            this.loading = 'show';   
-            //console.log(this.cliente);
-            //console.log(this._userService.getCliente());            
-            //console.log((this._userService.getCliente()).id);
-            this._documentoService.getDocumentos(this.token, this.cliente, page).subscribe(
+            if(this._userService.getCliente()){
+                this.clienteE = this._userService.getCliente();
+            }
+
+            this.loading = 'show';            
+            this._userService.getClientes(this.token, page).subscribe(
                 response => {                    
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -73,10 +64,9 @@ export class DocumentoComponent implements OnInit {
                         window.location.href = '/login';                        
                     }
                     else{    
-                        this.documentos = response.data;
+                        this.clientes = response.data;
                         this.token = this._userService.setToken(response.token);                                                
-                        this.loading = 'hide';                  
-                              
+                        this.loading = 'hide';                        
                         // Total paginas
                         this.pages = [];
                         for(let i = 0; i < response.total_pages; i++){
@@ -105,40 +95,52 @@ export class DocumentoComponent implements OnInit {
         });         
     }
 
-    mostrarDocumento(id){       
+    seleccionar(cliente){
+        localStorage.setItem('cliente', JSON.stringify(cliente));
+        this.clienteE = cliente;
+    }
+
+    anular(){
+        localStorage.removeItem('cliente');
+        this.clienteE = null;
+    }
+
+    revertir(){
+        if(this.mostrar) this.mostrar = false;
+        else this.mostrar = true;
+
+    }
+
+    /*mostrarDocumento(id){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
-                
-                if(response.status == 'success'){
-                    let prueba = JSON.stringify(response);
-                    this.file = response.file;
-                    console.log("Información recibida");
-                    //this.file = response.file;
-                    console.log(prueba);  
-                    console.log(this.file);
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión");
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
                 }
-                else{
-                    if(response.code = 405){
-                        console.log("Token caducado. Reiniciar sesión");
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
+                else{  
+                    console.log("Información recibida");
+                    this.status_documento = response.status;  
+                    this.token = this._userService.setToken(response.token);                   
+                    if(this.status_documento != 'success'){
+                        this.status_documento = 'error';
                     }else{
-                        console.log(response);
+                        this.documento = response.data;                                                
                         //this._router.navigate(['/mostrardocumento']);
-                    } 
-                        
+                        //Volver a cargar la página documento, para reiniciar el token
+                    }     
                 }               
             },
             error => {
-                console.log("AQUÍ!!!");
-                console.log(<any>error);                
+                console.log(<any>error)                
             }
         );        
-    }
+    }*/
 
-    borrarDocumento(id){        
+    /*borrarDocumento(id){        
         this._documentoService.borrarDocumento(this.token, id).subscribe(            
             response => {
                 if(response.code == 405){
@@ -162,17 +164,5 @@ export class DocumentoComponent implements OnInit {
                 console.log(<any>error)                
             }
         );         
-    }
-
-    cargarCliente(){
-		this._route.params.forEach((params: Params) => {
-			let logout = +params['id'];
-			if(logout == 1) {				                
-                //console.log("cliente borrado"); 
-                localStorage.removeItem('cliente');
-            }        
-        });   
-        this.mostrarTodosDocumentos();                                          
-    }
+    }*/
 }
-

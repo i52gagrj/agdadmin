@@ -15,6 +15,7 @@
                     <th>Emisor</th>
                     <th>Receptor</th>
                     <th>Texto</th>
+                    <th> </th>
                 </tr>
 
                 <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
@@ -33,7 +34,11 @@
                             {{mensaje.texto}}
                         </h4>
                     </td> 
+                    <td>
+                        <a [routerLink]="['/mensaje-new']" class="btn btn-primary"> Contestar </a>
+                    </td>                     
                 </tr>
+                
                 
             </table>
 

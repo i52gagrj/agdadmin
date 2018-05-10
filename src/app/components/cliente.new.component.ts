@@ -1,28 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Mensaje } from '../models/mensaje';
+import { Cliente } from '../models/cliente';
 import { UserService } from '../services/user.service';
-import { MensajeService } from '../services/mensaje.service';
 
 @Component({
-    selector: 'mensaje-new',
-    templateUrl: '../views/mensaje.new.html',
-    providers: [UserService, MensajeService]
+    selector: 'cliente-new',
+    templateUrl: '../views/cliente.new.html',
+    providers: [UserService]
 })
-export class MensajeNewComponent implements OnInit {
+export class ClienteNewComponent implements OnInit {
     public page_title: string;
     public identity;
     public token;
-    public mensaje: Mensaje;
-    public status_mensaje;
+    public cliente: Cliente;
+    public clavebis;
+    public status_cliente;
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
-        private _userService: UserService,
-        private _mensajeService: MensajeService        
+        private _userService: UserService        
     ){
-        this.page_title = 'Enviar nuevo mensaje';
+        this.page_title = 'Añadir nuevo cliente';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();
     }
@@ -31,13 +30,13 @@ export class MensajeNewComponent implements OnInit {
         if(this.identity == null && !this.identity.sub){
             this._router.navigate(['/login']);
         }else {
-            this.mensaje = new Mensaje(1, null, this.identity.sub, this.identity.admin, "null");
+            this.cliente = new Cliente(1, "", "", "", this.identity.sub, false, null);
         }       
-        console.log('El componente mensaje.new.component ha sido cargado!!');         
+        console.log('El componente cliente.new.component ha sido cargado!!');         
     }
 
     onSubmit(){        
-        this._mensajeService.create(this.token, this.mensaje).subscribe(
+        this._userService.create(this.token, this.cliente).subscribe(
             response => {
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
@@ -48,12 +47,12 @@ export class MensajeNewComponent implements OnInit {
                 }
                 else{                   
                     this.token = this._userService.setToken(response.token);              
-                    this.status_mensaje = response.status;                    
-                    if(this.status_mensaje != 'success'){
-                        this.status_mensaje = 'error';
+                    this.status_cliente = response.status;                    
+                    if(this.status_cliente != 'success'){
+                        this.status_cliente = 'error';
                     }else{
-                        this.mensaje = response.data;
-                        this._router.navigate(['/mensaje']);
+                        this.cliente = response.data;
+                        this._router.navigate(['/cliente']);
                     }
                 }                    
             },

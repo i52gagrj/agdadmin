@@ -23,6 +23,7 @@ export class ModeloComponent implements OnInit{
     public pagePrev;
     public pageNext;
     public loading;
+    public cliente;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -33,11 +34,13 @@ export class ModeloComponent implements OnInit{
 		this.title = 'Modelos';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();  
+        this.cliente = null;
 
 	}
 
 	ngOnInit(){
-		console.log('El componente modelo.component ha sido cargado!!');
+        console.log('El componente modelo.component ha sido cargado!!');
+        this.cargarCliente();
 		this.mostrarTodosModelos();
 	}
 
@@ -48,9 +51,16 @@ export class ModeloComponent implements OnInit{
             if(!page){
                 page = 1;
             }
+            
+            let cliente = this._userService.getCliente();
+            if(cliente != null){
+                this.cliente = cliente.id;
+            }else{
+                this.cliente = null;
+            }             
 
             this.loading = 'show';            
-            this._modeloService.getModelos(this.token, page).subscribe(
+            this._modeloService.getModelos(this.token, this.cliente, page).subscribe(
                 response => {
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -91,4 +101,15 @@ export class ModeloComponent implements OnInit{
             );
         });         
     }
+
+    cargarCliente(){
+		this._route.params.forEach((params: Params) => {
+			let logout = +params['id'];
+			if(logout == 1) {				                
+                //console.log("cliente borrado"); 
+                localStorage.removeItem('cliente');
+            }        
+        });   
+        this.mostrarTodosModelos();                                          
+    }        
 }	

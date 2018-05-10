@@ -54,6 +54,12 @@ export class UserService{
 		return token;
 	}
 
+	getCliente() {
+		let cliente = JSON.parse(localStorage.getItem('cliente'));		
+
+		return cliente;		
+	}
+
 	setToken(nuevotoken) {
 		localStorage.setItem('token', JSON.stringify(nuevotoken));
 		this.token = JSON.parse(localStorage.getItem('token'));
@@ -64,6 +70,7 @@ export class UserService{
 	logout(){
 		localStorage.removeItem('identity');
 		localStorage.removeItem('token');
+		localStorage.removeItem('cliente');
 	}
 
 	logout2() {
@@ -74,5 +81,24 @@ export class UserService{
 		
 		return this._http.post(this.url+'/logout', params, {headers: headers}).map(res => res.json());
 	}
+
+	getClientes(token, page = null){
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		if(page == null) {
+			page=1;
+		}
+
+		return this._http.post(this.url+'/usuario/returnallclients?page='+page , params, {headers: headers}).map(res => res.json());
+	}
+	
+    create(token, cliente) {
+		let json = JSON.stringify(cliente);
+		let params = "json="+json+"&authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		
+		return this._http.post(this.url+'/usuario/new', params, {headers: headers}).map(res => res.json());
+	}	
 
 }	

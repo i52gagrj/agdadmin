@@ -23,6 +23,7 @@ export class MensajeComponent implements OnInit{
     public pagePrev;
     public pageNext;
     public loading;
+    public cliente;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -33,24 +34,32 @@ export class MensajeComponent implements OnInit{
 		this.title = 'Mensajes';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();  
-
+        this.cliente = null;
 	}
 
 	ngOnInit(){
-        console.log('El componente mensaje.component ha sido cargado!!');        
+        console.log('El componente mensaje.component ha sido cargado!!');   
+        this.cargarCliente();     
         this.mostrarTodosMensajes();        
 	}
 
 	mostrarTodosMensajes(){
         this._route.params.forEach((params: Params) => {
-            let page = +params['page'];            
+            let page = +params['page'];
 
             if(!page){
                 page = 1;
-            }            
+            }
 
+            let cliente = this._userService.getCliente();
+            if(cliente != null){
+                this.cliente = cliente.id;
+            }else{
+                this.cliente = null;
+            } 
+                        
             this.loading = 'show';            
-            this._mensajeService.getMensajes(this.token, page).subscribe(
+            this._mensajeService.getMensajes(this.token, this.cliente, page).subscribe(
                 response => {
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -92,5 +101,16 @@ export class MensajeComponent implements OnInit{
         }); 
         //console.log(this.loading);
     }
+
+    cargarCliente(){
+		this._route.params.forEach((params: Params) => {
+			let cliente = +params['id'];
+			if(cliente == 1) {				                
+                //console.log("cliente borrado"); 
+                localStorage.removeItem('cliente');
+            }        
+        });   
+        this.mostrarTodosMensajes();
+    }    
     
 }	

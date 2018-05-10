@@ -1,31 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Documento } from '../models/documento';
+import { Modelo } from '../models/modelo';
 import { UserService } from '../services/user.service';
-import { DocumentoService } from '../services/documento.service';
+import { ModeloService } from '../services/modelo.service';
 
 
 @Component({
-    selector: 'documento-new',
-    templateUrl: '../views/documento.new.html',
-    providers: [UserService, DocumentoService]
+    selector: 'modelo-new',
+    templateUrl: '../views/modelo.new.html',
+    providers: [UserService, ModeloService]
 })
-export class DocumentoNewComponent implements OnInit {
+export class ModeloNewComponent implements OnInit {
     public page_title: string;
     public identity;
     public token;
     public file: File;    
-    public documento: Documento;
-    public status_documento;
+    public modelo: Modelo;
+    public status_modelo;
     
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
         private _userService: UserService,
-        private _documentoService: DocumentoService      
+        private _modeloService: ModeloService      
     ){
-        this.page_title = 'Añadir un nuevo documento';
+        this.page_title = 'Añadir un nuevo modelo';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();
         //this.url = GLOBAL.url;
@@ -35,9 +35,9 @@ export class DocumentoNewComponent implements OnInit {
         if(this.identity == null && !this.identity.sub){
             this._router.navigate(['/login']);
         }else {
-            this.documento = new Documento(1, "", "", "", this.identity.sub, "null");
+            this.modelo = new Modelo(1, "", "", 1, 1, "", "", 1, "null");
         }   
-        console.log('El componente documento.new.component ha sido cargado!!');     
+        console.log('El componente modelo.new.component ha sido cargado!!');     
     }
 
     fileChange(event) {
@@ -48,23 +48,23 @@ export class DocumentoNewComponent implements OnInit {
     }
 
     onSubmit(){
-        this._documentoService.create(this.token, this.documento, this.file).subscribe(            
+        this._modeloService.create(this.token, this.modelo, this.file).subscribe(            
             response => {
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
-                    this._userService.logout();
+                    /*this._userService.logout();
                     this.identity = null;
                     this.token = null;
-                    window.location.href = '/login';                        
+                    window.location.href = '/login';                        */
                 }
                 else{                                                         
-                    this.status_documento = response.status;
+                    this.status_modelo = response.status;
                     this.token = this._userService.setToken(response.token);                     
-                    if(this.status_documento != 'success'){
-                        this.status_documento = 'error';
+                    if(this.status_modelo != 'success'){
+                        this.status_modelo = 'error';
                     }else{
-                        this.documento = response.data;
-                        this._router.navigate(['/documento']);
+                        this.modelo = response.data;
+                        this._router.navigate(['/cliente']);
                     }     
                 }               
             },

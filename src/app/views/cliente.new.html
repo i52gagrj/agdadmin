@@ -1,0 +1,39 @@
+
+<div class="col-md-12">
+        <div class="loader" *ngIf="loading == 'show'">
+            <img src="assets/img/loader.gif" />
+        </div>	
+    
+        <div class="col-md-12" *ngIf="!loading || cliente">
+            <h3>{{page_title}}</h3>
+    
+            <div class="alert alert-success" *ngIf="status_cliente == 'success'">
+                El cliente se ha creado correctamente		
+            </div>
+            
+            <div class="alert alert-danger" *ngIf="status_cliente == 'error'" >
+                ¡El cliente NO se ha creado!
+            </div>
+    
+            <form #clienteNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+                <p> 			
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" name="clientenombre" #clientenombre="ngModel" [(ngModel)]="cliente.nombre" required />
+                    <span *ngIf="!clientenombre.valid && clientenombre.touched">El nombre no es correcto</span>
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="clienteemail" #clienteemail="ngModel" [(ngModel)]="cliente.email" required />
+                    <span *ngIf="!clienteemail.valid && clienteemail.touched">El email no es correcto</span>
+                    <label>clave</label>
+                    <input type="text" class="form-control" name="clienteclave" #clienteclave="ngModel" [(ngModel)]="cliente.password" required />
+                    <span *ngIf="!clienteclave.valid && clienteclave.touched">La clave no es correcta</span>
+                    <label>Repita la clave</label>
+                    <input type="text" class="form-control" name="clienteclavebis" #clienteclavebis="ngModel" [(ngModel)]="clavebis" required />
+                    <span *ngIf="!clienteclavebis.valid && clienteclavebis.touched && cliente.password != clavebis">La clave esta equivocada, revisela</span>                
+                </p>				        			
+    
+                <input type="submit" value="Enviar cliente" class="btn btn-primary" [disabled]="!clienteNewForm.form.valid" />
+            </form>
+    
+        </div>
+    
+    </div>
