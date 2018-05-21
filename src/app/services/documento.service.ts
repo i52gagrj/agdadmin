@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, ResponseContentType, Headers } from '@angular/http';
 import "rxjs/add/operator/map";
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from '../services/global';
@@ -13,17 +13,6 @@ export class DocumentoService{
 	constructor(private _http: Http) {
 		this.url = GLOBAL.url;
 	}
-
-    create(token, documento, file) {
-		let json = JSON.stringify(documento);
-
-		const formData = new FormData;
-		formData.append('file', file);
-		formData.append('authorization', token);
-		formData.append('json', json);
-				
-		return this._http.post(this.url+'/documento/new', formData).map(res => res.json());
-	}	
 	
 	getDocumentos(token, id, page = null){
 		let params;
@@ -40,6 +29,17 @@ export class DocumentoService{
 		}
 
 		return this._http.post(this.url+'/documento/listall?page='+page , params, {headers: headers}).map(res => res.json());
+	}	
+	
+	getDocumentosNuevos(token, id, page = null){
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		if(page == null) {
+			page=1;
+		}
+
+		return this._http.post(this.url+'/documento/listnew?page='+page , params, {headers: headers}).map(res => res.json());
     }	
 	
 	//Version para admin
@@ -56,9 +56,9 @@ export class DocumentoService{
 
     getDocumento(token, id){
 		let params = "authorization="+token+"&id="+id;
-		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});		
 		
-		return this._http.post(this.url+'/documento/returnone', params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/documento/returnone', params, {responseType: ResponseContentType.Blob, headers: headers}).map(res => res.json());
 	}
 	
 	borrarDocumento(token, id){        

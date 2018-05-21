@@ -15,7 +15,8 @@
                     <th>Emisor</th>
                     <th>Receptor</th>
                     <th>Texto</th>
-                    <th>Fecha</th>                    
+                    <th>Fecha</th>
+                    <th> </th>
                 </tr>
 
                 <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
@@ -30,7 +31,10 @@
                     </td> 
                     <td>						                        
                         {{mensaje.fechahora.timestamp | generateDate}}                        
-                    </td>                                        
+                    </td>                     
+                    <td>
+                        <a [routerLink]="['/mensaje-new']" class="btn btn-primary"> Contestar </a>
+                    </td>                     
                 </tr>
                 
                 
@@ -45,17 +49,17 @@
 
 			<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
 				<li>
-					<a [routerLink]="['/mensaje', pagePrev]" aria-label="Previous">
+					<a [routerLink]="['/mensaje-admin', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
 
 				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/mensaje', page+1]">{{page+1}} </a>
+					<a [routerLink]="['/mensaje-admin', page+1]">{{page+1}} </a>
 				</li>
 
 				<li>
-					<a [routerLink]="['/mensaje', pageNext]" aria-label="Next">
+					<a [routerLink]="['/mensaje-admin', pageNext]" aria-label="Next">
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>

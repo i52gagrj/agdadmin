@@ -2,24 +2,23 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
-//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
-import { Modelo } from '../models/modelo';
+import { Mensaje } from '../models/mensaje';
 import { UserService } from '../services/user.service';
-import { ModeloService } from '../services/modelo.service';
+import { MensajeService } from '../services/mensaje.service';
 
 @Component({
-	selector: 'modelo',
-	templateUrl: '../views/modelo.html',
-	providers: [UserService, ModeloService]
+	selector: 'mensaje-admin',
+	templateUrl: '../views/mensaje.admin.html',
+	providers: [UserService, MensajeService]
 })
-export class ModeloComponent implements OnInit{
+export class MensajeAdminComponent implements OnInit{
     public title: string;
     public identity;
     public token;
-    public modelos: Array<Modelo>;
+    public mensajes: Array<Mensaje>;
     public pages;
+    public id;
     public pagePrev;
     public pageNext;
     public loading;
@@ -29,38 +28,29 @@ export class ModeloComponent implements OnInit{
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _userService: UserService,
-		private _modeloService: ModeloService
+		private _mensajeService: MensajeService
 	){
-		this.title = 'Modelos';
+		this.title = 'Mensajes';
         this.identity = this._userService.getIdentity();  
         this.token = this._userService.getToken();  
         this.cliente = null;
-
 	}
 
 	ngOnInit(){
-        console.log('El componente modelo.component ha sido cargado!!');
-        this.cargarCliente();
-		this.mostrarTodosModelos();
+        console.log('El componente mensaje.admin.component ha sido cargado!!');           
+        this.mostrarNuevosMensajes();        
 	}
 
-	mostrarTodosModelos(){
+	mostrarNuevosMensajes(){
         this._route.params.forEach((params: Params) => {
             let page = +params['page'];
 
             if(!page){
                 page = 1;
             }
-            
-            let cliente = this._userService.getCliente();
-            if(cliente != null){
-                this.cliente = cliente.id;
-            }else{
-                this.cliente = null;
-            }             
-
+                        
             this.loading = 'show';            
-            this._modeloService.getModelos(this.token, this.cliente, page).subscribe(
+            this._mensajeService.getNuevosMensajes(this.token, page).subscribe(
                 response => {
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -70,8 +60,8 @@ export class ModeloComponent implements OnInit{
                         window.location.href = '/login';                        
                     }
                     else{                     
-                        this.modelos = response.data;
-                        this.token = this._userService.setToken(response.token);
+                        this.mensajes = response.data;
+                        this.token = this._userService.setToken(response.token);                 
                         this.loading = 'hide';
 
                         // Total paginas
@@ -99,10 +89,7 @@ export class ModeloComponent implements OnInit{
                     console.log(<any>error);
                 }
             );
-        });         
+        }); 
     }
-
-    cargarCliente(){
-        this.cliente = this._userService.getCliente();                                         
-    }       
-}	
+    
+}

@@ -16,8 +16,9 @@
                     <th>Tipo</th>
                     <th>Usuario</th>
                     <th>Fecha</th>
+                    <th>Visto</th>
                     <th>Enlace</th>
-                    <th> </th>
+                    <!--<th> </th>-->
                 </tr>
                 
                 <tr *ngFor="let documento of documentos" class="documento-item">                    
@@ -29,16 +30,19 @@
                     </td>
                     <td>                        
                         {{documento.usuario}}
-                    </td>
+                    </td>                    
                     <td>                        
                         {{documento.fechahora.timestamp | generateDate}}                        
                     </td>                                      
+                    <td>                        
+                        {{documento.visto}}                        
+                    </td>     
                     <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
+                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
-                    </td>                                                            
+                    <!--<td>
+                        <button type="button" class="btn btn-primary" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
+                    </td>-->                                                            
                 </tr>
                 
                 
@@ -53,28 +57,21 @@
 
 			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
 				<li>
-					<a [routerLink]="['/documento', pagePrev]" aria-label="Previous">
+					<a [routerLink]="['/documento-admin', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
 
 				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/documento', page+1]">{{page+1}} </a>
+					<a [routerLink]="['/documento-admin', page+1]">{{page+1}} </a>
 				</li>
 
 				<li>
-					<a [routerLink]="['/documento', pageNext]" aria-label="Next">
+					<a [routerLink]="['/documento-admin', pageNext]" aria-label="Next">
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-            </ul>    
-            
-            <!-- <div>
-                <a [routerLink]="['/documento-new']" *ngIf="identity && identity.sub" class="btn btn-primary">                    
-                    Añadir documento
-                  </a>
-            </div> -->
-           
+            </ul>               
 
         </div>
     </div>

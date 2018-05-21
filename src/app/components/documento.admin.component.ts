@@ -8,11 +8,11 @@ import { DocumentoService } from '../services/documento.service';
 import { saveAs } from 'file-saver';
 
 @Component({
-	selector: 'documento',
-	templateUrl: '../views/documento.html',
+	selector: 'documento-admin',
+	templateUrl: '../views/documento.admin.html',
 	providers: [UserService, DocumentoService]
 })
-export class DocumentoComponent implements OnInit {
+export class DocumentoAdminComponent implements OnInit {
     public title: string;
     public identity;
     public token;
@@ -40,12 +40,11 @@ export class DocumentoComponent implements OnInit {
 	}
 
 	ngOnInit() {
-        console.log('El componente documento.component ha sido cargado!!');	
-        this.cargarCliente();    
-        this.mostrarTodosDocumentos();                    
+        console.log('El componente documento.component ha sido cargado!!');	        
+        this.mostrarNuevosDocumentos();                    
     }
 
-    mostrarTodosDocumentos(){
+    mostrarNuevosDocumentos(){
         this._route.params.forEach((params: Params) => {
             let page = +params['page'];
 
@@ -53,14 +52,14 @@ export class DocumentoComponent implements OnInit {
                 page = 1;
             }
             
-            if(this.cliente != null){
+            /*if(this.cliente != null){
                 this.id = this.cliente.id;
             }else{
                 this.id = null;
-            } 
+            } */
                         
             this.loading = 'show';   
-            this._documentoService.getDocumentos(this.token, this.id, page).subscribe(
+            this._documentoService.getDocumentosNuevos(this.token, page).subscribe(
                 response => {                    
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -159,35 +158,4 @@ export class DocumentoComponent implements OnInit {
             }
         );        
     }    
-
-    borrarDocumento(id){        
-        this._documentoService.borrarDocumento(this.token, id).subscribe(            
-            response => {
-                if(response.code == 405){
-                    console.log("Token caducado. Reiniciar sesión")
-                    this._userService.logout();
-                    this.identity = null;
-                    this.token = null;
-                    window.location.href = '/login';                        
-                }
-                else{                                                                           
-                    this.status_documento = response.status;
-                    this.token = this._userService.setToken(response.token);                     
-                    if(this.status_documento != 'success'){
-                        this.status_documento = 'error';
-                    }else{                        
-                        this.mostrarTodosDocumentos();
-                    }         
-                }               
-            },
-            error => {
-                console.log(<any>error)                
-            }
-        );         
-    }
-
-    cargarCliente(){
-        this.cliente = this._userService.getCliente();                                         
-    }
 }
-

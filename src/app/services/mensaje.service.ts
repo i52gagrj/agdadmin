@@ -37,5 +37,16 @@ export class MensajeService{
 		}
 
 		return this._http.post(this.url+'/mensaje/listall?page='+page , params, {headers: headers}).map(res => res.json());
-    }	
+	}	
+	
+	getNuevosMensajes(token, page = null){
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		if(page == null) {
+			page=1;
+		}
+
+		return this._http.post(this.url+'/mensaje/listnew?page='+page , params, {headers: headers}).map(res => res.json());
+	}
 }	

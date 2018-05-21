@@ -54,10 +54,10 @@ export class UserService{
 		return token;
 	}
 
-	getCliente() {
+	getCliente() {		
 		let cliente = JSON.parse(localStorage.getItem('cliente'));		
-
-		return cliente;		
+		if(cliente!= "undefined") return cliente;		
+		else return null;
 	}
 
 	setToken(nuevotoken) {

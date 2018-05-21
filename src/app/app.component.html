@@ -1,4 +1,4 @@
-<header id="header" *ngIf="cliente == null"> 
+<header id="header"> 
   <div class="navbar navbar-default">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-extended="false">
@@ -53,7 +53,7 @@
                   </a>
                 </li> 
                 <li>
-                  <a [routerLink]="['/']" *ngIf="identity && identity.sub">
+                  <a [routerLink]="['/actividad']" *ngIf="identity && identity.sub">
                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                     Actividad
                   </a>
@@ -62,7 +62,7 @@
             </li>         
         
         <li>
-          <a [routerLink]="['/documento', 1]" *ngIf="identity && identity.sub">
+          <a [routerLink]="['/documento-admin']" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
             Documentos
           </a>
@@ -76,7 +76,7 @@
         </li>  
 
         <li>
-          <a [routerLink]="['/mensaje', 1]" *ngIf="identity && identity.sub">
+          <a [routerLink]="['/mensaje-admin']" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Mensajes
           </a>

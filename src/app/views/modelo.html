@@ -22,29 +22,19 @@
 
                 <tr *ngFor="let modelo of modelos" class="modelos-item">
                     <td>						
-                        <h4>
-                            {{modelo.descripcion}}
-                        </h4>
+                        {{modelo.descripcion}}                        
                     </td>
-                    <td>						
-                        <h4>
-                            {{modelo.codigo}}
-                        </h4>
+                    <td>						                        
+                        {{modelo.codigo}}                        
                     </td>
-                    <td>						
-                        <h4>
-                            {{modelo.trimestre}}
-                        </h4>
+                    <td>						                        
+                        {{modelo.trimestre}}
                     </td> 
-                    <td>						
-                        <h4>
-                            {{modelo.ejercicio}}
-                        </h4>
+                    <td>						                        
+                        {{modelo.ejercicio}}                        
                     </td>                                                           
-                    <td>
-                        <h4>
-                            {{modelo.tipo}}
-                        </h4>
+                    <td>                        
+                        {{modelo.tipo}}                        
                     </td>
                     <td>
                         <a href="http://localhost/agd/symfony/web/uploads/modelos/{{modelo.ruta}}" target="_blank" class="btn btn-warning"> Descargar </a>

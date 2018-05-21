@@ -20,6 +20,7 @@ export class MensajeComponent implements OnInit{
     public token;
     public mensajes: Array<Mensaje>;
     public pages;
+    public id;
     public pagePrev;
     public pageNext;
     public loading;
@@ -38,28 +39,27 @@ export class MensajeComponent implements OnInit{
 	}
 
 	ngOnInit(){
-        console.log('El componente mensaje.component ha sido cargado!!');   
-        this.cargarCliente();     
+        console.log('El componente mensaje.component ha sido cargado!!');             
         this.mostrarTodosMensajes();        
 	}
 
 	mostrarTodosMensajes(){
+        this.cliente = this._userService.getCliente();
         this._route.params.forEach((params: Params) => {
             let page = +params['page'];
 
             if(!page){
                 page = 1;
             }
-
-            let cliente = this._userService.getCliente();
-            if(cliente != null){
-                this.cliente = cliente.id;
+            
+            if(this.cliente != null){
+                this.id = this.cliente.id;
             }else{
-                this.cliente = null;
+                this.id = null;
             } 
                         
             this.loading = 'show';            
-            this._mensajeService.getMensajes(this.token, this.cliente, page).subscribe(
+            this._mensajeService.getMensajes(this.token, this.id, page).subscribe(
                 response => {
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -68,49 +68,41 @@ export class MensajeComponent implements OnInit{
                         this.token = null;
                         window.location.href = '/login';                        
                     }
-                    else{                     
-                        this.mensajes = response.data;
-                        this.token = this._userService.setToken(response.token);                 
+                    else{ 
                         this.loading = 'hide';
+                        if(response.token){
+                            this.token = this._userService.setToken(response.token);
+                        }                                            
+                        if(response.status == 'success')
+                        {    
+                            this.mensajes = response.data;                                                   
+                            // Total paginas
+                            this.pages = [];
+                            for(let i = 0; i < response.total_pages; i++){
+                                this.pages.push(i);                        
+                            }
 
-                        // Total paginas
-                        this.pages = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pages.push(i);                        
-                        }
+                            // Pagina anterior
+                            if(page >= 2){
+                                this.pagePrev = (page - 1);
+                            }else{
+                                this.pagePrev = page;                        
+                            }  
 
-                        // Pagina anterior
-                        if(page >= 2){
-                            this.pagePrev = (page - 1);
-                        }else{
-                            this.pagePrev = page;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(page < response.total_pages){
-                            this.pageNext = (page+1);
-                        }else{
-                            this.pageNext = page;
-                        }
+                            // Pagina siguiente
+                            if(page < response.total_pages){
+                                this.pageNext = (page+1);
+                            }else{
+                                this.pageNext = page;
+                            }
+                        } 
                     }
                 },
                 error => {
                     console.log(<any>error);
                 }
             );
-        }); 
-        //console.log(this.loading);
-    }
-
-    cargarCliente(){
-		this._route.params.forEach((params: Params) => {
-			let cliente = +params['id'];
-			if(cliente == 1) {				                
-                //console.log("cliente borrado"); 
-                localStorage.removeItem('cliente');
-            }        
-        });   
-        this.mostrarTodosMensajes();
+        });         
     }    
     
 }	

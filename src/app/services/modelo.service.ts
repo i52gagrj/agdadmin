@@ -17,10 +17,10 @@ export class ModeloService{
     create(token, modelo, file) {
 		let json = JSON.stringify(modelo);
 
-		const formData = new FormData;
-		formData.append('file', file);
+		const formData = new FormData;		
 		formData.append('authorization', token);
 		formData.append('json', json);
+		formData.append('file', file);
 				
 		return this._http.post(this.url+'/modelo/new', formData).map(res => res.json());		
 	}	

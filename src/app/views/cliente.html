@@ -3,58 +3,70 @@
             Inicia sesión para acceder a más opciones
         </div>
     
-        <div class="col-md-12" *ngIf="identity && identity.sub" > 
+        <div class="col-md-12" *ngIf="!clienteE && identity && identity.sub" > 
             <div *ngIf="mostrar">
                 <p> 			
                     <label>Nombre</label>
                     <input type="text" class="form-control" name="clientenombre"/>         
                 </p>
                 <p>
-                    <button type="button" class="btn btn-pimary" (click)="revertir()">Ocultar</button>
+                    <button type="button" class="btn btn-pimary" (click)="revertir()">Ocultar Busqueda</button>
                 </p>    
             </div>  
             <div *ngIf="!mostrar">
                 <p>
-                    <button type="button" class="btn btn-pimary" (click)="revertir()">Mostrar</button>
+                    <button type="button" class="btn btn-pimary" (click)="revertir()">Mostrar Busqueda</button>
                 </p>
             </div>                 
         </div>
 
         <div class="col-md-12" *ngIf="identity && identity.sub">
             <div class="col-md-12" *ngIf="clienteE">
-                <th>Nombre: </th> 
-                <td>{{clienteE.nombre}} </td>                 
-                <td>  </td> 
-                <td><button type="button" class="btn btn-primary" (click)="anular()">Anular</button></td> 
+                <p> 
+                    <th>Id: </th> 
+                    <td>{{clienteE.id}} </td>                 
+                </p>
+
+                <p>
+                    <th>Nombre: </th> 
+                    <td>{{clienteE.nombre}} </td>                 
+                </p>
+
+                <p>
+                    <th>Email: </th> 
+                    <td>{{clienteE.email}} </td>                 
+                </p>                
+
+                <p>
+                    <td><button type="button" class="btn btn-primary" (click)="anular()">Anular</button></td> 
+                </p>
             </div>
     
-            <div class="all-clientes">
+            <div class="all-clientes"  *ngIf="clientes && clientes.length >= 1 && !clienteE">
                 <div class="loader" *ngIf="loading == 'show'">
                     <img src="assets/img/loader.gif" />
                 </div>
     
-                <table class="table table-hover table-stripped" id="clientes-list" *ngIf="clientes && clientes.length >= 1 && !clienteE" >
+                <table class="table table-hover table-stripped" id="clientes-list" >
                     <tr>
+                        <th>Id</th>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th></th>                        
                     </tr>
     
                     <tr *ngFor="let cliente of clientes" class="cliente-item">
-                        <td>						
-                            <h4>
-                                {{cliente.nombre}}
-                            </h4>
+                        <td>						                            
+                            {{cliente.id}}                            
                         </td>
-                        <td>
-                            <h4>
-                                {{cliente.email}}
-                            </h4>
+                        <td>						                            
+                            {{cliente.nombre}}                            
+                        </td>
+                        <td>                            
+                            {{cliente.email}}                            
                         </td>    
-                        <td>						
-                            <h4>
-                                <button type="button" class="btn btn-pimary" (click)="seleccionar(cliente)">Seleccionar</button>
-                            </h4>
+                        <td>						                            
+                            <button type="button" class="btn btn-pimary" (click)="seleccionar(cliente)">Seleccionar</button>                            
                         </td>                                                                                    
                     </tr>
                     
