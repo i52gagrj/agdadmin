@@ -82,15 +82,11 @@ export class UserService{
 		return this._http.post(this.url+'/logout', params, {headers: headers}).map(res => res.json());
 	}
 
-	getClientes(token, page = null){
+	getClientes(token){
 		let params = "authorization="+token;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/usuario/returnallclients?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/usuario/returnallclients', params, {headers: headers}).map(res => res.json());
 	}
 	
     create(token, cliente) {

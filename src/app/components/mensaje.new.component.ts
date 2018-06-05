@@ -47,7 +47,9 @@ export class MensajeNewComponent implements OnInit {
                     window.location.href = '/login';                        
                 }
                 else{                   
-                    this.token = this._userService.setToken(response.token);              
+                    if(response.token){
+                        this.token = this._userService.setToken(response.token);
+                    }              
                     this.status_mensaje = response.status;                    
                     if(this.status_mensaje != 'success'){
                         this.status_mensaje = 'error';

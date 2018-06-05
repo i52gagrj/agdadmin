@@ -2,12 +2,11 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
-//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
-import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
+//import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Mensaje } from '../models/mensaje';
 import { UserService } from '../services/user.service';
 import { MensajeService } from '../services/mensaje.service';
+import { DataTableModule } from 'angular2-datatable';
 
 @Component({
 	selector: 'mensaje',
@@ -15,6 +14,11 @@ import { MensajeService } from '../services/mensaje.service';
 	providers: [UserService, MensajeService]
 })
 export class MensajeComponent implements OnInit{
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+
     public title: string;
     public identity;
     public token;
@@ -25,6 +29,7 @@ export class MensajeComponent implements OnInit{
     public pageNext;
     public loading;
     public cliente;
+    public status_mensaje;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -44,14 +49,7 @@ export class MensajeComponent implements OnInit{
 	}
 
 	mostrarTodosMensajes(){
-        this.cliente = this._userService.getCliente();
-        this._route.params.forEach((params: Params) => {
-            let page = +params['page'];
-
-            if(!page){
-                page = 1;
-            }
-            
+        this.cliente = this._userService.getCliente();        
             if(this.cliente != null){
                 this.id = this.cliente.id;
             }else{
@@ -59,7 +57,7 @@ export class MensajeComponent implements OnInit{
             } 
                         
             this.loading = 'show';            
-            this._mensajeService.getMensajes(this.token, this.id, page).subscribe(
+            this._mensajeService.getMensajes(this.token, this.id).subscribe(
                 response => {
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -72,37 +70,56 @@ export class MensajeComponent implements OnInit{
                         this.loading = 'hide';
                         if(response.token){
                             this.token = this._userService.setToken(response.token);
-                        }                                            
+                        }                                                                    
                         if(response.status == 'success')
                         {    
                             this.mensajes = response.data;                                                   
-                            // Total paginas
-                            this.pages = [];
-                            for(let i = 0; i < response.total_pages; i++){
-                                this.pages.push(i);                        
-                            }
-
-                            // Pagina anterior
-                            if(page >= 2){
-                                this.pagePrev = (page - 1);
-                            }else{
-                                this.pagePrev = page;                        
-                            }  
-
-                            // Pagina siguiente
-                            if(page < response.total_pages){
-                                this.pageNext = (page+1);
-                            }else{
-                                this.pageNext = page;
-                            }
                         } 
                     }
                 },
                 error => {
                     console.log(<any>error);
                 }
-            );
-        });         
+            );                 
     }    
+
+    cambiarVisto(id, estado){
+        console.log(id);
+        console.log(estado);
+        if(estado == false){ 
+            estado = true;
+        }else{
+            estado = false;
+        }
+        console.log(estado);
+
+        this._mensajeService.cambiarEstado(this.token,id,estado).subscribe(
+            response => {
+                console.log(response);
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                   
+                    if(response.token){
+                        this.token = this._userService.setToken(response.token);
+                    }              
+                    this.status_mensaje = response.status;                    
+                    if(this.status_mensaje != 'success'){
+                        this.status_mensaje = 'error';
+                    }else{
+                        console.log(response);
+                        this.mostrarTodosMensajes();
+                    }
+                }                   
+            },
+            error => {
+                console.log(<any>error)
+            }
+        );
+    } 
     
 }	

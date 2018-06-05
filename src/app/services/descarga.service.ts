@@ -14,7 +14,7 @@ export class DescargaService{
 		this.url = GLOBAL.url;
 	}
  	
-	getDescargas(token, id, page = null){
+	getDescargas(token, id){
 		let params;
 
 		if(id){
@@ -24,11 +24,7 @@ export class DescargaService{
 		}
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/descarga/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/descarga/listall' , params, {headers: headers}).map(res => res.json());
     }	
 
 }

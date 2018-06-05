@@ -13,28 +13,24 @@ import { MensajeAdminComponent } from './components/mensaje.admin.component';
 import { ClienteComponent } from './components/cliente.component';
 import { ClienteNewComponent } from './components/cliente.new.component';
 import { ActividadComponent } from './components/actividad.component';
+import { PruebaComponent } from './components/prueba.component';
  
 const appRoutes: Routes = [
 	{path:'', component: ClienteComponent},
 	{path:'login', component: LoginComponent},
 	{path:'login/:id', component: LoginComponent},
 	{path:'register', component: RegisterComponent},
-	{path:'documento', component: DocumentoComponent},		
-	{path:'documento/:page', component: DocumentoComponent},
+	{path:'documento', component: DocumentoComponent},			
 	{path:'documento-admin', component: DocumentoAdminComponent},
-	{path:'documento-admin/:page', component: DocumentoAdminComponent},	
-	{path:'modelo', component: ModeloComponent},	
-	{path:'modelo/:page', component: ModeloComponent},
+	{path:'modelo', component: ModeloComponent},		
 	{path:'modelo-new', component: ModeloNewComponent},
-	{path:'mensaje', component: MensajeComponent},
-	{path:'mensaje/:page', component: MensajeComponent},
+	{path:'mensaje', component: MensajeComponent},	
 	{path:'mensaje-new', component: MensajeNewComponent},
 	{path:'mensaje-admin', component: MensajeAdminComponent},
-	{path:'mensaje-admin/:page', component: MensajeAdminComponent},
 	{path:'cliente', component: ClienteComponent},
-	{path:'cliente/:page', component: ClienteComponent},
 	{path:'cliente-new', component: ClienteNewComponent},
 	{path:'actividad', component: ActividadComponent},
+	{path:'prueba', component: PruebaComponent},
 	{path:'**', component: LoginComponent}
 	
 ];

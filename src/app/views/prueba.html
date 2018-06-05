@@ -1,0 +1,116 @@
+<div class="col-md-12">
+    <div *ngIf="!identity || identity == null">
+        Inicia sesión para acceder a más opciones
+    </div>
+
+    <div class="col-md-12" *ngIf="identity && identity.sub">
+
+        <div class="all-documents">
+            <div class="loader" *ngIf="loading == 'show'">
+                <img src="assets/img/loader.gif" />
+            </div>
+
+            <table class="table table-striped" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+                <thead>
+                <tr>
+                  <th>
+                    <mfDefaultSorter by="descripcion">Name</mfDefaultSorter>
+                  </th>
+                  <th>
+                    <mfDefaultSorter by="tipo">Tipo</mfDefaultSorter>
+                  </th>
+                  <th>
+                    <mfDefaultSorter by="nombre">Usuario</mfDefaultSorter>
+                  </th>
+                  <th>
+                    <mfDefaultSorter by="fechahora">Fecha</mfDefaultSorter>
+                  </th>
+                  <th>
+                    Visto
+                  </th>                  
+                  <th>
+                    Enlace
+                  </th>                  
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of mf.data">
+                  <td>{{item.descripcion}}</td>
+                  <td>{{item.tipo}}</td>
+                  <td>{{item.nombre}}</td>  
+                  <td>{{item.fechahora.timestamp | generateDate}}</td>                                    
+                  <td>{{item.visto}}</td>
+                  <td><button type="button" class="btn btn-info" (click)="mostrarDocumento(item.id)"> Mostrar </button></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <td colspan="4">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[10,25,50]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+                </tfoot>
+            </table> 
+
+            <!--<table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
+                <tr>
+                    <th>Descripción</th>
+                    <th>Tipo</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Visto</th>
+                    <th>Enlace</th>                    
+                </tr>
+                
+                <tr *ngFor="let documento of documentos" class="documento-item">                    
+                    <td>						                        
+                        {{documento.descripcion}}                        
+                    </td>
+                    <td>                        
+                        {{documento.tipo}}
+                    </td>
+                    <td>                        
+                        {{documento.usuario}}
+                    </td>                    
+                    <td>                        
+                        {{documento.fechahora.timestamp | generateDate}}                        
+                    </td>                                      
+                    <td>                        
+                        {{documento.visto}}                        
+                    </td>     
+                    <td>
+                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
+                    </td>                                                           
+                </tr>
+                
+                
+            </table>
+
+            <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
+                <div class="clearfix"></div>
+                <div class="alert alert-warning">
+                    No se han encontrado documentos
+                </div>
+            </div>
+
+			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
+				<li>
+					<a [routerLink]="['/documento-admin', pagePrev]" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+
+				<li *ngFor="let page of pages">  
+					<a [routerLink]="['/documento-admin', page+1]">{{page+1}} </a>
+				</li>
+
+				<li>
+					<a [routerLink]="['/documento-admin', pageNext]" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+            </ul> -->              
+
+        </div>
+    </div>
+</div>

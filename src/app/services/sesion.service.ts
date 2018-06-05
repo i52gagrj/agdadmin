@@ -3,6 +3,7 @@ import { Http, Response, ResponseContentType, Headers } from '@angular/http';
 import "rxjs/add/operator/map";
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from '../services/global';
+import { NullAstVisitor } from '@angular/compiler';
 
 @Injectable()
 export class SesionService{
@@ -14,7 +15,7 @@ export class SesionService{
 		this.url = GLOBAL.url;
 	}
  	
-	getSesiones(token, id, page = null){
+	getSesiones(token, id){
 		let params;
 
 		if(id){
@@ -22,16 +23,10 @@ export class SesionService{
 		}else{
 			params = "authorization="+token;
 		}
+		
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		console.log('Sesiones.service');
-		console.log(id);		
-
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/sesion/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/sesion/listall', params, {headers: headers}).map(res => res.json());
     }	
 
 }

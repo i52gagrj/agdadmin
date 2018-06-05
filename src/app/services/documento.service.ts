@@ -14,7 +14,7 @@ export class DocumentoService{
 		this.url = GLOBAL.url;
 	}
 	
-	getDocumentos(token, id, page = null){
+	getDocumentos(token, id){
 		let params;
 
 		if(id){
@@ -24,22 +24,21 @@ export class DocumentoService{
 		}
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/documento/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/documento/listall', params, {headers: headers}).map(res => res.json());
 	}	
 	
-	getDocumentosNuevos(token, id, page = null){
+	getDocumentosNuevos(token){
 		let params = "authorization="+token;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
+		return this._http.post(this.url+'/documento/listnew', params, {headers: headers}).map(res => res.json());
+	}
+	
+	getDocumentosPrueba(token){
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		return this._http.post(this.url+'/documento/listnew?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/documento/listprueba', params, {headers: headers}).map(res => res.json());
     }	
 	
 	//Version para admin
@@ -66,6 +65,18 @@ export class DocumentoService{
         let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
         
         return this._http.post(this.url+'/documento/delete', params, {headers: headers}).map(res => res.json());
-    }
+	}
+	
+	cambiarEstado(token,id,estado){
+		if(estado==true){
+			estado = 1;
+		}
+		if(estado == false){
+			estado = 0;
+		}	
+		let params = "authorization="+token+"&id="+id+"&estado="+estado;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		return this._http.post(this.url+'/documento/cambiarestado', params, {headers: headers}).map(res => res.json());
+	}	
 }
 	

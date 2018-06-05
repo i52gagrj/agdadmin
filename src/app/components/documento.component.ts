@@ -6,6 +6,7 @@ import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
 import { saveAs } from 'file-saver';
+import { DataTableModule } from 'angular2-datatable';
 
 @Component({
 	selector: 'documento',
@@ -13,6 +14,11 @@ import { saveAs } from 'file-saver';
 	providers: [UserService, DocumentoService]
 })
 export class DocumentoComponent implements OnInit {
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+    
     public title: string;
     public identity;
     public token;
@@ -60,7 +66,7 @@ export class DocumentoComponent implements OnInit {
             } 
                         
             this.loading = 'show';   
-            this._documentoService.getDocumentos(this.token, this.id, page).subscribe(
+            this._documentoService.getDocumentos(this.token, this.id).subscribe(
                 response => {                    
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
@@ -69,30 +75,36 @@ export class DocumentoComponent implements OnInit {
                         this.token = null;
                         window.location.href = '/login';                        
                     }
-                    else{    
-                        this.documentos = response.data;
-                        this.token = this._userService.setToken(response.token);                                                
-                        this.loading = 'hide';                  
-                              
-                        // Total paginas
-                        this.pages = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pages.push(i);                        
-                        }
+                    else{  
+                        this.loading = 'hide';
+                        if(response.token){
+                            this.token = this._userService.setToken(response.token);
+                        }                
+                                                    
+                        if(response.status == 'success')
+                        {                           
+                            this.documentos = response.data;
+                                
+                            /*// Total paginas
+                            this.pages = [];
+                            for(let i = 0; i < response.total_pages; i++){
+                                this.pages.push(i);                        
+                            }
 
-                        // Pagina anterior
-                        if(page >= 2){
-                            this.pagePrev = (page - 1);
-                        }else{
-                            this.pagePrev = page;                        
-                        }  
+                            // Pagina anterior
+                            if(page >= 2){
+                                this.pagePrev = (page - 1);
+                            }else{
+                                this.pagePrev = page;                        
+                            }  
 
-                        // Pagina siguiente
-                        if(page < response.total_pages){
-                            this.pageNext = (page+1);
-                        }else{
-                            this.pageNext = page;
-                        }
+                            // Pagina siguiente
+                            if(page < response.total_pages){
+                                this.pageNext = (page+1);
+                            }else{
+                                this.pageNext = page;
+                            }*/
+                        }    
                     }
                 },
                 error => {
@@ -102,7 +114,7 @@ export class DocumentoComponent implements OnInit {
         });         
     }
 
-    mostrarDocumento(id, nombre){       
+    mostrarDocumento(id){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
                 

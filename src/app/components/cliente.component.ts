@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Cliente } from '../models/cliente';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
+import { DataTableModule } from 'angular2-datatable'; 
 
 @Component({
 	selector: 'cliente',
@@ -12,19 +13,22 @@ import { DocumentoService } from '../services/documento.service';
 	providers: [UserService, DocumentoService]
 })
 export class ClienteComponent implements OnInit {
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+
     public title: string;
     public identity;
     public token;
     public clientes: Array<Cliente>;
-    //public status_documento;
     public pages;
     public pagePrev;
     public pageNext;
     public loading;
     public id;
     public clienteE;
-    //public documento;
-    public mostrar = false;
+    public busqueda;    
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -42,57 +46,53 @@ export class ClienteComponent implements OnInit {
     }
 
     mostrarTodosClientes(){        
-        this._route.params.forEach((params: Params) => {
-            let page = +params['page'];
+        if(this._userService.getCliente()){
+            this.clienteE = this._userService.getCliente();
+        }
 
-            if(!page){
-                page = 1;
-            }
-
-            if(this._userService.getCliente()){
-                this.clienteE = this._userService.getCliente();
-            }
-
-            this.loading = 'show';            
-            this._userService.getClientes(this.token, page).subscribe(
-                response => {                    
-                    if(response.code == 405){
-                        console.log("Token caducado. Reiniciar sesión")
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }
-                    else{    
-                        this.clientes = response.data;
-                        this.token = this._userService.setToken(response.token);                                                
-                        this.loading = 'hide';                        
-                        // Total paginas
-                        this.pages = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pages.push(i);                        
-                        }
-
-                        // Pagina anterior
-                        if(page >= 2){
-                            this.pagePrev = (page - 1);
-                        }else{
-                            this.pagePrev = page;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(page < response.total_pages){
-                            this.pageNext = (page+1);
-                        }else{
-                            this.pageNext = page;
-                        }
-                    }
-                },
-                error => {
-                    console.log(<any>error);    
+        this.loading = 'show';            
+        this._userService.getClientes(this.token).subscribe(
+            response => {                    
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
                 }
-            );
-        });         
+                else{    
+                    this.clientes = response.data;
+                    this.token = this._userService.setToken(response.token);                                                
+                    this.loading = 'hide';    
+                    console.log(this.clientes);
+                    console.log(this.clienteE);
+                    console.log(this.loading);
+                    
+                    // Total paginas
+                    /*this.pages = [];
+                    for(let i = 0; i < response.total_pages; i++){
+                        this.pages.push(i);                        
+                    }
+
+                    // Pagina anterior
+                    if(page >= 2){
+                        this.pagePrev = (page - 1);
+                    }else{
+                        this.pagePrev = page;                        
+                    }  
+
+                    // Pagina siguiente
+                    if(page < response.total_pages){
+                        this.pageNext = (page+1);
+                    }else{
+                        this.pageNext = page;
+                    }*/
+                }
+            },
+            error => {
+                console.log(<any>error);    
+            }
+        );               
     }
 
     seleccionar(cliente){
@@ -103,12 +103,6 @@ export class ClienteComponent implements OnInit {
     anular(){
         localStorage.removeItem('cliente');
         this.clienteE = null;
-    }
-
-    revertir(){
-        if(this.mostrar) this.mostrar = false;
-        else this.mostrar = true;
-
     }
 
     /*mostrarDocumento(id){       

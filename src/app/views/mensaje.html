@@ -10,19 +10,23 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" >
+            <table class="table table-hover table-stripped" [mfData]="mensajes" #mf="mfDataTable" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
                 <tr>
                     <th>Emisor</th>
                     <th>Receptor</th>
                     <th>Texto</th>
-                    <th>Fecha</th>                    
+                    <th>Fecha</th>
+                    <th>Visto</th>                                        
                 </tr>
+                </thead>
 
-                <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
-                    <td>						                        
-                        {{mensaje.emisor}}                        
+                <tbody>
+                <tr *ngFor="let mensaje of mf.data" class="mensajes-item">
+                    <td>
+                        {{mensaje.emisor}}
                     </td>
-                    <td>						                        
+                    <td>
                         {{mensaje.receptor}}
                     </td>
                     <td>						                        
@@ -30,9 +34,21 @@
                     </td> 
                     <td>						                        
                         {{mensaje.fechahora.timestamp | generateDate}}                        
-                    </td>                                        
+                    </td>
+                    <td>						                        
+                        <input type="checkbox" name="visto" [ngModel]="mensaje.visto" (change)="cambiarVisto(mensaje.id,mensaje.visto)"/>
+                    </td>
+                                                         
                 </tr>
-                
+                </tbody>   
+
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>                 
                 
             </table>
 
@@ -41,26 +57,7 @@
                 <div class="alert alert-warning">
                     No se han encontrado mensajes
                 </div>
-            </div>
-
-			<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
-				<li>
-					<a [routerLink]="['/mensaje', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/mensaje', page+1]">{{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/mensaje', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul>  
-
+            </div> 
         </div>
     </div>
 </div>

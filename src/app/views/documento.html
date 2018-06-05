@@ -10,17 +10,18 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
+            <table class="table table-hover table-stripped" [mfData]="documentos" #mf="mfDataTable" id="documentos-list" *ngIf="documentos && documentos.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
                 <tr>
                     <th>Descripción</th>
                     <th>Tipo</th>
-                    <th>Usuario</th>
                     <th>Fecha</th>
-                    <th>Enlace</th>
-                    <th> </th>
+                    <th>Enlace</th>                    
                 </tr>
+                </thead>
                 
-                <tr *ngFor="let documento of documentos" class="documento-item">                    
+                <tbody>
+                <tr *ngFor="let documento of mf.data" class="documento-item">                    
                     <td>						                        
                         {{documento.descripcion}}                        
                     </td>
@@ -28,19 +29,25 @@
                         {{documento.tipo}}
                     </td>
                     <td>                        
-                        {{documento.usuario}}
-                    </td>
-                    <td>                        
                         {{documento.fechahora.timestamp | generateDate}}                        
-                    </td>                                      
+                    </td>    
+                                        
+                    <!--<td>                        
+                        <input type="checkbox" name="visto" value="documento.visto"/>
+                    </td>-->
                     <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
+                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
+                    </td>                                                       
+                </tr>  
+                </tbody>              
+
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
-                    </td>                                                            
                 </tr>
-                
+                </tfoot> 
                 
             </table>
 
@@ -49,32 +56,7 @@
                 <div class="alert alert-warning">
                     No se han encontrado documentos
                 </div>
-            </div>
-
-			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
-				<li>
-					<a [routerLink]="['/documento', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/documento', page+1]">{{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/documento', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul>    
-            
-            <!-- <div>
-                <a [routerLink]="['/documento-new']" *ngIf="identity && identity.sub" class="btn btn-primary">                    
-                    Añadir documento
-                  </a>
-            </div> -->
-           
+            </div>      
 
         </div>
     </div>

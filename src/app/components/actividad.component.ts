@@ -9,6 +9,8 @@ import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
 import { SesionService } from '../services/sesion.service';
 import { DescargaService } from '../services/descarga.service';
+import { DataTableModule } from 'angular2-datatable';
+
 
 @Component({
 	selector: 'actividad',
@@ -16,6 +18,11 @@ import { DescargaService } from '../services/descarga.service';
 	providers: [UserService, DocumentoService, SesionService, DescargaService]
 })
 export class ActividadComponent implements OnInit{
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+    
     public title: string;
     public identity;
     public token;
@@ -32,7 +39,9 @@ export class ActividadComponent implements OnInit{
     public pageNextses;
     public pageNextDoc;    
     public pageNextDes;
-    public loading;
+    public loading1;
+    public loading2;
+    public loading3;
     public file: File;
 	public id = null;	
 
@@ -58,10 +67,6 @@ export class ActividadComponent implements OnInit{
 	}
 
     mostrarTodosDocumentos(pagedoc = null){        
-        if(!pagedoc){
-            pagedoc = 1;
-        }
-
         this.cliente = this._userService.getCliente();
 
         if(this.cliente != null){
@@ -70,8 +75,8 @@ export class ActividadComponent implements OnInit{
             this.id = null;
         } 
                     
-        this.loading = 'show';   
-        this._documentoService.getDocumentos(this.token, this.id, pagedoc).subscribe(
+        this.loading1 = 'show';   
+        this._documentoService.getDocumentos(this.token, this.id).subscribe(
             response => {                    
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
@@ -84,12 +89,12 @@ export class ActividadComponent implements OnInit{
                     if(response.token){
                         this.token = this._userService.setToken(response.token);
                     }
-                    this.loading = 'hide';
+                    this.loading1 = 'hide';
 
                     if(response.status == 'success'){
                         this.documentos = response.data;                                                                                                                  
                         // Total paginas
-                        this.pagesdoc = [];
+                        /*this.pagesdoc = [];
                         for(let i = 0; i < response.total_pages; i++){
                             this.pagesdoc.push(i);                                                    
                         }                        
@@ -106,7 +111,7 @@ export class ActividadComponent implements OnInit{
                             this.pageNextDoc = (pagedoc+1);
                         }else{
                             this.pageNextDoc = pagedoc;
-                        }
+                        }*/
                     }
                 }
             },
@@ -116,11 +121,7 @@ export class ActividadComponent implements OnInit{
         );                 
     }  
 
-	mostrarTodasDescargas(pagedes = null){                    
-        if(!pagedes){
-            pagedes = 1;
-        }
-
+	mostrarTodasDescargas(){                    
         this.cliente = this._userService.getCliente();
                     
         if(this.cliente != null){
@@ -129,8 +130,8 @@ export class ActividadComponent implements OnInit{
             this.id = null;
         }                     
 
-        this.loading = 'show';            
-        this._descargaService.getDescargas(this.token, this.id, pagedes).subscribe(
+        this.loading2 = 'show';            
+        this._descargaService.getDescargas(this.token, this.id).subscribe(
             response => {
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
@@ -143,12 +144,12 @@ export class ActividadComponent implements OnInit{
                     if(response.token){
                         this.token = this._userService.setToken(response.token);
                     }                              
-                    this.loading = 'hide';
+                    this.loading2 = 'hide';
 
                     if(response.status == 'success'){
                         this.descargas = response.data;                                            
                         // Total paginas
-                        this.pagesdes = [];
+                        /*this.pagesdes = [];
                         for(let i = 0; i < response.total_pages; i++){
                             this.pagesdes.push(i);                        
                         }
@@ -165,7 +166,7 @@ export class ActividadComponent implements OnInit{
                             this.pageNextDes = (pagedes+1);
                         }else{
                             this.pageNextDes = pagedes;
-                        }
+                        }*/
                     }
                 }
             },
@@ -175,23 +176,17 @@ export class ActividadComponent implements OnInit{
         );      
     }
 
-    mostrarTodasSesiones(pageses = null){           
-        if(!pageses){
-            pageses = 1;
-        }            
-
+    mostrarTodasSesiones(){                    
         this.cliente = this._userService.getCliente();
         
         if(this.cliente != null){
             this.id = this.cliente.id;
         }else{
             this.id = null;
-        } 
-        console.log('Sesiones');
-        console.log(this.id);
+        }                 
 
-        this.loading = 'show';   
-        this._sesionService.getSesiones(this.token, this.id, pageses).subscribe(
+        this.loading3 = 'show';   
+        this._sesionService.getSesiones(this.token, this.id).subscribe(
             response => {                    
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
@@ -204,13 +199,13 @@ export class ActividadComponent implements OnInit{
                     if(response.token){
                         this.token = this._userService.setToken(response.token);
                     }
-                    this.loading = 'hide';                    
+                    this.loading3 = 'hide';                    
 
                     if(response.status=='success'){
                         this.sesiones = response.data;                                                              
                                 
                         // Total paginas
-                        this.pagesses = [];
+                        /*this.pagesses = [];
                         for(let i = 0; i < response.total_pages; i++){
                             this.pagesses.push(i);                                                 
                         }
@@ -227,7 +222,7 @@ export class ActividadComponent implements OnInit{
                             this.pageNextses = (pageses+1);
                         }else{
                             this.pageNextses = pageses;
-                        }
+                        }*/
                     }
                 }
             },

@@ -10,35 +10,60 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" >
+            <table class="table table-stripped" [mfData]="mensajes" #mf="mfDataTable" id="documentos-list" *ngIf="mensajes && mensajes.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
                 <tr>
-                    <th>Emisor</th>
-                    <th>Receptor</th>
+                    <th><mfDefaultSorter by="emisor">Emisor</mfDefaultSorter></th>                    
                     <th>Texto</th>
-                    <th>Fecha</th>
+                    <th><mfDefaultSorter by="fechahora.timestamp">Fecha</mfDefaultSorter></th>
+                    <th>Leido</th>
                     <th> </th>
                 </tr>
+                </thead>
 
-                <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
+                <tbody>
+                <tr *ngFor="let mensaje of mf.data" class="mensajes-item">
+                    <td>{{mensaje.emisor}}</td>                    
+                    <td>{{mensaje.texto}}</td>
+                    <td>{{mensaje.fechahora.timestamp | generateDate}}</td>               
                     <td>						                        
-                        {{mensaje.emisor}}                        
-                    </td>
-                    <td>						                        
-                        {{mensaje.receptor}}
-                    </td>
-                    <td>						                        
-                        {{mensaje.texto}}                        
-                    </td> 
-                    <td>						                        
-                        {{mensaje.fechahora.timestamp | generateDate}}                        
-                    </td>                     
+                        <input type="checkbox" name="visto" [ngModel]="mensaje.visto" (change)="cambiarVisto(mensaje.id,mensaje.visto)"/> 
+                    </td>                          
                     <td>
-                        <a [routerLink]="['/mensaje-new']" class="btn btn-primary"> Contestar </a>
+                        <button type="button" class="btn btn-primary" (click)="responder(mensaje.id, mensaje.idem)"> Contestar </button>
                     </td>                     
                 </tr>
-                
-                
+
+
+                </tbody>                               
+
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>                
             </table>
+
+            <div class="col-md-12" *ngIf="!loading || contestamensaje">                                
+                <div class="alert alert-success" *ngIf="status_mensaje == 'success'">
+                    El mensaje se ha creado correctamente		
+                </div>                    
+                <div class="alert alert-danger" *ngIf="status_mensaje == 'error'" >
+                    ¡El mensaje NO se ha creado!
+                </div>
+        
+                <form #mensajeNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+                    <p> 
+                        <label>Mensaje</label>
+                        <input type="text" class="form-control" name="mensajetexto" #mensajetexto="ngModel" [(ngModel)]="mensaje.texto" required />
+                        <span *ngIf="!mensajetexto.valid && mensajetexto.touched">El mensaje no es correcto</span>
+                    </p>	        			
+        
+                    <input type="submit" value="Enviar mensaje" class="btn btn-primary" [disabled]="!mensajeNewForm.form.valid" />
+                </form>            
+            </div>            
 
             <div class="col-md-12" *ngIf="loading != 'show' && !mensajes">
                 <div class="clearfix"></div>
@@ -47,7 +72,7 @@
                 </div>
             </div>
 
-			<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
+			<!--<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
 				<li>
 					<a [routerLink]="['/mensaje-admin', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
@@ -63,7 +88,7 @@
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-            </ul>  
+            </ul> --> 
 
         </div>
     </div>

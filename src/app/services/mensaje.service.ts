@@ -20,9 +20,9 @@ export class MensajeService{
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 		
 		return this._http.post(this.url+'/mensaje/new', params, {headers: headers}).map(res => res.json());
-	}	
+	}			
 	
-	getMensajes(token, id, page = null){
+	getMensajes(token, id){
 		let params;
 
 		if(id){
@@ -32,21 +32,30 @@ export class MensajeService{
 		}
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/mensaje/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/mensaje/listall', params, {headers: headers}).map(res => res.json());
 	}	
 	
-	getNuevosMensajes(token, page = null){
+	getNuevosMensajes(token){
 		let params = "authorization="+token;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
+		/*if(page == null) {
 			page=1;
-		}
+		}*/
 
-		return this._http.post(this.url+'/mensaje/listnew?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/mensaje/listnew', params, {headers: headers}).map(res => res.json());
 	}
+
+	cambiarEstado(token,id,estado){
+		if(estado==true){
+			estado = 1;
+		}
+		if(estado == false){
+			estado = 0;
+		}	
+		let params = "authorization="+token+"&id="+id+"&estado="+estado;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+		return this._http.post(this.url+'/mensaje/cambiarestado', params, {headers: headers}).map(res => res.json());
+	}
+
 }	

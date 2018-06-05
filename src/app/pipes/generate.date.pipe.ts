@@ -11,7 +11,7 @@ export class GenerateDatePipe implements PipeTransform{
 
 		var hour = a.getHours();
 		let hourfinal = hour.toString()
-		if(date <= 9){
+		if(hour <= 9){
 			hourfinal = '0'+hour;
 		} 
 		var min = a.getMinutes();

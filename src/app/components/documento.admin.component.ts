@@ -5,7 +5,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
-import { saveAs } from 'file-saver';
+//import { saveAs } from 'file-saver';
+import { DataTableModule } from 'angular2-datatable';
 
 @Component({
 	selector: 'documento-admin',
@@ -13,6 +14,11 @@ import { saveAs } from 'file-saver';
 	providers: [UserService, DocumentoService]
 })
 export class DocumentoAdminComponent implements OnInit {
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+
     public title: string;
     public identity;
     public token;
@@ -26,6 +32,7 @@ export class DocumentoAdminComponent implements OnInit {
     public documento;
     public cliente;
     public file: File;
+    //public status_documento;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -44,64 +51,30 @@ export class DocumentoAdminComponent implements OnInit {
         this.mostrarNuevosDocumentos();                    
     }
 
-    mostrarNuevosDocumentos(){
-        this._route.params.forEach((params: Params) => {
-            let page = +params['page'];
-
-            if(!page){
-                page = 1;
-            }
-            
-            /*if(this.cliente != null){
-                this.id = this.cliente.id;
-            }else{
-                this.id = null;
-            } */
-                        
-            this.loading = 'show';   
-            this._documentoService.getDocumentosNuevos(this.token, page).subscribe(
-                response => {                    
-                    if(response.code == 405){
-                        console.log("Token caducado. Reiniciar sesión")
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }
-                    else{    
-                        this.documentos = response.data;
-                        this.token = this._userService.setToken(response.token);                                                
-                        this.loading = 'hide';                  
-                              
-                        // Total paginas
-                        this.pages = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pages.push(i);                        
-                        }
-
-                        // Pagina anterior
-                        if(page >= 2){
-                            this.pagePrev = (page - 1);
-                        }else{
-                            this.pagePrev = page;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(page < response.total_pages){
-                            this.pageNext = (page+1);
-                        }else{
-                            this.pageNext = page;
-                        }
-                    }
-                },
-                error => {
-                    console.log(<any>error);    
+    mostrarNuevosDocumentos(){                               
+        this.loading = 'show';   
+        this._documentoService.getDocumentosNuevos(this.token).subscribe(
+            response => {                    
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
                 }
-            );
-        });         
+                else{    
+                    this.documentos = response.data;
+                    this.token = this._userService.setToken(response.token);                                                
+                    this.loading = 'hide';                  
+                }
+            },
+            error => {
+                console.log(<any>error);    
+            }
+        );               
     }
 
-    mostrarDocumento(id, nombre){       
+    mostrarDocumento(id){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
                 
@@ -124,14 +97,52 @@ export class DocumentoAdminComponent implements OnInit {
                         
                 }               
             },
-            error => {
-                console.log("AQUÍ!!!");
+            error => {                
                 console.log(<any>error);                
             }
         );        
     }
 
-    descargarDocumento(id, nombre){       
+    cambiarVisto(id, estado){
+        console.log(id);
+        console.log(estado);
+        if(estado == false){ 
+            estado = true;
+        }else{
+            estado = false;
+        }
+        console.log(estado);
+
+        this._documentoService.cambiarEstado(this.token,id,estado).subscribe(
+            response => {                
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                   
+                    if(response.token){
+                        this.token = this._userService.setToken(response.token);
+                    }              
+                    this.status_documento = response.status;                    
+                    if(this.status_documento != 'success'){
+                        this.status_documento = 'error';
+                    }else{
+                        console.log(response);
+                        console.log(this.status_documento);
+                        this._router.navigate(['/documento-admin']);
+                    }
+                }                   
+            },
+            error => {
+                console.log(<any>error)
+            }
+        );
+    }     
+
+    /*descargarDocumento(id, nombre){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
                 
@@ -157,5 +168,6 @@ export class DocumentoAdminComponent implements OnInit {
                 console.log(<any>error);                
             }
         );        
-    }    
+    }*/    
+    
 }

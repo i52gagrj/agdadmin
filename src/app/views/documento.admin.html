@@ -10,18 +10,20 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
+            <table class="table table-stripped" [mfData]="documentos" #mf="mfDataTable" id="documentos-list" *ngIf="documentos && documentos.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
                 <tr>
-                    <th>Descripción</th>
+                    <th><mfDefaultSorter by="descripcion">Descripción</mfDefaultSorter></th>
                     <th>Tipo</th>
-                    <th>Usuario</th>
-                    <th>Fecha</th>
+                    <th><mfDefaultSorter by="nombre">Usuario</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="fechahora.timestamp">Fecha</mfDefaultSorter></th>
                     <th>Visto</th>
-                    <th>Enlace</th>
-                    <!--<th> </th>-->
+                    <th>Enlace</th>                    
                 </tr>
+                </thead>
                 
-                <tr *ngFor="let documento of documentos" class="documento-item">                    
+                <tbody>
+                <tr *ngFor="let documento of mf.data" class="documento-item">
                     <td>						                        
                         {{documento.descripcion}}                        
                     </td>
@@ -29,22 +31,29 @@
                         {{documento.tipo}}
                     </td>
                     <td>                        
-                        {{documento.usuario}}
+                        {{documento.nombre}}
                     </td>                    
                     <td>                        
                         {{documento.fechahora.timestamp | generateDate}}                        
-                    </td>                                      
-                    <td>                        
-                        {{documento.visto}}                        
+                    </td>                                                                              
+                    <td>
+                        <h5>
+                            <input type="checkbox" name="visto" [ngModel]="documento.visto"  (change)="cambiarVisto(documento.id,documento.visto)"/> 
+                        </h5>
                     </td>     
                     <td>
-                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
-                    </td>
-                    <!--<td>
-                        <button type="button" class="btn btn-primary" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
-                    </td>-->                                                            
+                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
+                    </td>                                                           
                 </tr>
+                </tbody>
                 
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>
                 
             </table>
 
@@ -55,7 +64,7 @@
                 </div>
             </div>
 
-			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
+			<!--<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
 				<li>
 					<a [routerLink]="['/documento-admin', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
@@ -71,7 +80,7 @@
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-            </ul>               
+            </ul>-->
 
         </div>
     </div>

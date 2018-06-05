@@ -12,51 +12,49 @@
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
       
-          <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
-              <tr>
-                  <th>Descripción</th>
-                  <th>Tipo</th>
-                  <th>Fecha</th>                  
-              </tr>
-
-              <tr *ngFor="let documento of documentos" class="documento-item">
-                  <td>						                      
-                      {{documento.descripcion}}                      
-                  </td>
-                  <td>                      
-                      {{documento.tipo}}                      
-                  </td>
-                  <td>                      
-                      {{documento.fechahora.timestamp | generateDate}}                      
-                  </td>                                      
-              </tr>
-              
-          </table>
-
-        <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
-            <div class="clearfix"></div>
-            <div class="alert alert-warning">
-                No se han encontrado documentos
-            </div>
+        <div class="loader" *ngIf="loading1 == 'show'">
+          <img src="assets/img/loader.gif" />
         </div>
+        
+        <table class="table table-hover table-stripped" [mfData]="documentos" #mf="mfDataTable" id="documentos-list" *ngIf="documentos && documentos.length >= 1" [mfRowsOnPage]="rowsOnPage">
+          <thead>
+          <tr>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Fecha</th>                  
+          </tr>
+          </thead>
 
-        <ul class="pagination" *ngIf="documentos && documentos.length >= 1">
-          <li>            
-            <a aria-label="Previous" (click)="mostrarTodosDocumentos(pagePrevDoc)">  
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
+          <tbody>
+          <tr *ngFor="let documento of mf.data" class="documento-item">
+              <td>						                      
+                  {{documento.descripcion}}
+              </td>
+              <td>                      
+                  {{documento.tipo}}
+              </td>
+              <td>                      
+                  {{documento.fechahora.timestamp | generateDate}}
+              </td>                                      
+          </tr>
+          </tbody>
 
-          <li *ngFor="let pagedoc of pagesdoc">              
-            <a (click)="mostrarTodosDocumentos(pagedoc+1)">{{pagedoc+1}} </a>
-          </li>
+          <tfoot>
+          <tr>
+              <td colspan="4">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+              </td>
+          </tr>
+          </tfoot> 
+          
+        </table>
 
-          <li>            
-            <a aria-label="Next" (click)="mostrarTodosDocumentos(pageNextDoc)">  
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>         
+        <div class="col-md-12" *ngIf="loading1 != 'show' && !documentos">
+          <div class="clearfix"></div>
+          <div class="alert alert-warning">
+            No se han encontrado documentos
+          </div>
+        </div>   
 
       </div>
     </div>
@@ -74,50 +72,62 @@
 
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
-        <table class="table table-hover table-stripped" id="models-list" *ngIf="descargas && descargas.length >= 1" >
-          <tr>
-            <th>Usuario</th>
+        <div class="loader" *ngIf="loading2 == 'show'">
+          <img src="assets/img/loader.gif" />
+        </div>
+
+        <table class="table table-hover table-stripped" [mfData]="descargas" #mf="mfDataTable" id="descarga-list" *ngIf="descargas && descargas.length >= 1" [mfRowsOnPage]="rowsOnPage">
+
+          <thead>
+          <tr>            
             <th>Modelo</th>
+            <th>Codigo</th>
+            <th>Ejercicio</th>
+            <th>Trimestre</th>
+            <th>Tipo</th>            
             <th>Fecha</th>
           </tr>
+          </thead>
 
-          <tr *ngFor="let descarga of descargas" class="descargas-item">
+          <tbody>
+          <tr *ngFor="let descarga of mf.data" class="descargas-item">
             <td>						
-                {{descarga.usuario}}                        
+                {{descarga.descripcion}}                        
+            </td>
+            <td>						
+                {{descarga.codigo}}                        
+            </td>            
+            <td>						                        
+                {{descarga.ejercicio}}                        
             </td>
             <td>						                        
-                {{descarga.modelo}}                        
-            </td>
+                {{descarga.trimestre}}                        
+            </td>            
+            <td>						                        
+                {{descarga.tipo}}                        
+            </td>            
             <td>						                        
                 {{descarga.fechahora.timestamp | generateDate}}
             </td>            
-          </tr>         
+          </tr>  
+          </tbody>         
+
+          <tfoot>
+          <tr>
+              <td colspan="4">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+              </td>
+          </tr>
+          </tfoot>
+
         </table>
 
-        <div class="col-md-12" *ngIf="loading != 'show' && !descargas">
+        <div class="col-md-12" *ngIf="loading2 != 'show' && !descargas">
           <div class="clearfix"></div>
           <div class="alert alert-warning">
             No se han encontrado descargas
           </div>
         </div>
-
-        <ul class="pagination" *ngIf="descargas && descargas.length >= 1">
-          <li>
-            <a aria-label="Previous" (click)="mostrarTodasDescargas(pagePrevDes)">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-
-          <li *ngFor="let pagedes of pagesdes">  
-            <a (click)="mostrarTodasDescargas(pagedes+1)">{{pagedes+1}} </a>
-          </li>
-
-          <li>
-            <a aria-label="Next" (click)="mostrarTodasDescargas(pageNextDes)">  
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
       </div>    
     </div>
 
@@ -133,15 +143,21 @@
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
+        <div class="loader" *ngIf="loading3 == 'show'">
+            <img src="assets/img/loader.gif" />
+        </div>
     
-        <table class="table table-hover table-stripped" id="sesiones-list" *ngIf="sesiones && sesiones.length >= 1" >
+        <table class="table table-hover table-stripped" [mfData]="sesiones" #mf="mfDataTable" id="sesiones-list" *ngIf="sesiones && sesiones.length >= 1" [mfRowsOnPage]="rowsOnPage">
+          <thead>
           <tr>
             <th>Id</th>
             <th>Inicio</th>
             <th>Fin</th>                    
           </tr>
+          </thead>
 
-          <tr *ngFor="let sesion of sesiones" class="sesion-item">
+          <tbody>
+          <tr *ngFor="let sesion of mf.data" class="sesion-item">
             <td>						              
               {{sesion.id}}              
             </td>
@@ -152,36 +168,27 @@
               {{sesion.fin.timestamp | generateDate}}              
             </td>                                      
           </tr>
+          </tbody>
+
+          <tfoot>
+          <tr>
+              <td colspan="4">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+              </td>
+          </tr>
+          </tfoot>
             
         </table>
 
-        <div class="col-md-12" *ngIf="loading != 'show' && !sesiones">
+        <div class="col-md-12" *ngIf="loading3 != 'show' && !sesiones">
             <div class="clearfix"></div>
             <div class="alert alert-warning">
                 No se han encontrado sesiones
             </div>
         </div>
 
-        <ul class="pagination" *ngIf="sesiones && sesiones.length >= 1">
-          <li>
-            <a aria-label="Previous" (click)="mostrarTodasSesiones(pagePrevses)">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-
-          <li *ngFor="let pageses of pagesses">  
-            <a (click)="mostrarTodasSesiones(pageses+1)">{{pageses+1}} </a>
-          </li>
-
-          <li>
-            <a aria-label="Next" (click)="mostrarTodasSesiones(pageNextses)">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>         
-
       </div>
     </div>
   </div>
 
-  </div>
+</div>
