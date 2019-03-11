@@ -60,27 +60,9 @@
             <div class="col-md-12" *ngIf="loading != 'show' && !documentos">
                 <div class="clearfix"></div>
                 <div class="alert alert-warning">
-                    No se han encontrado documentos
+                    No se han encontrado nuevos documentos
                 </div>
             </div>
-
-			<!--<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
-				<li>
-					<a [routerLink]="['/documento-admin', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/documento-admin', page+1]">{{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/documento-admin', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul>-->
 
         </div>
     </div>

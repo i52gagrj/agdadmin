@@ -68,27 +68,9 @@
             <div class="col-md-12" *ngIf="loading != 'show' && !mensajes">
                 <div class="clearfix"></div>
                 <div class="alert alert-warning">
-                    No se han encontrado mensajes
+                    No se han encontrado nuevos mensajes
                 </div>
             </div>
-
-			<!--<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
-				<li>
-					<a [routerLink]="['/mensaje-admin', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/mensaje-admin', page+1]">{{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/mensaje-admin', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul> --> 
 
         </div>
     </div>

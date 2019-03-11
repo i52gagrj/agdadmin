@@ -1,5 +1,4 @@
-<div id="accordion">
-    
+<div id="accordion">    
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -8,7 +7,7 @@
         </button>
       </h5>
     </div>
-    
+      
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
       
@@ -18,15 +17,15 @@
         
         <table class="table table-hover table-stripped" [mfData]="documentos" #mf="mfDataTable" id="documentos-list" *ngIf="documentos && documentos.length >= 1" [mfRowsOnPage]="rowsOnPage">
           <thead>
-          <tr>
+            <tr>
               <th>Descripción</th>
               <th>Tipo</th>
               <th>Fecha</th>                  
-          </tr>
+            </tr>
           </thead>
 
           <tbody>
-          <tr *ngFor="let documento of mf.data" class="documento-item">
+            <tr *ngFor="let documento of mf.data" class="documento-item">
               <td>						                      
                   {{documento.descripcion}}
               </td>
@@ -36,15 +35,15 @@
               <td>                      
                   {{documento.fechahora.timestamp | generateDate}}
               </td>                                      
-          </tr>
+            </tr>
           </tbody>
 
           <tfoot>
-          <tr>
+            <tr>
               <td colspan="4">
-              <mfBootstrapPaginator></mfBootstrapPaginator>
+                <mfBootstrapPaginator></mfBootstrapPaginator>
               </td>
-          </tr>
+            </tr>
           </tfoot> 
           
         </table>
@@ -79,45 +78,45 @@
         <table class="table table-hover table-stripped" [mfData]="descargas" #mf="mfDataTable" id="descarga-list" *ngIf="descargas && descargas.length >= 1" [mfRowsOnPage]="rowsOnPage">
 
           <thead>
-          <tr>            
-            <th>Modelo</th>
-            <th>Codigo</th>
-            <th>Ejercicio</th>
-            <th>Trimestre</th>
-            <th>Tipo</th>            
-            <th>Fecha</th>
-          </tr>
+            <tr>            
+              <th>Modelo</th>
+              <th>Codigo</th>
+              <th>Ejercicio</th>
+              <th>Trimestre</th>
+              <th>Tipo</th>            
+              <th>Fecha</th>
+            </tr>
           </thead>
 
           <tbody>
-          <tr *ngFor="let descarga of mf.data" class="descargas-item">
-            <td>						
-                {{descarga.descripcion}}                        
-            </td>
-            <td>						
-                {{descarga.codigo}}                        
-            </td>            
-            <td>						                        
-                {{descarga.ejercicio}}                        
-            </td>
-            <td>						                        
-                {{descarga.trimestre}}                        
-            </td>            
-            <td>						                        
-                {{descarga.tipo}}                        
-            </td>            
-            <td>						                        
-                {{descarga.fechahora.timestamp | generateDate}}
-            </td>            
-          </tr>  
+            <tr *ngFor="let descarga of mf.data" class="descargas-item">
+              <td>						
+                  {{descarga.descripcion}}                        
+              </td>
+              <td>						
+                  {{descarga.codigo}}                        
+              </td>            
+              <td>						                        
+                  {{descarga.ejercicio}}                        
+              </td>
+              <td>						                        
+                  {{descarga.trimestre}}                        
+              </td>            
+              <td>						                        
+                  {{descarga.tipo}}                        
+              </td>            
+              <td>						                        
+                  {{descarga.fechahora.timestamp | generateDate}}
+              </td>            
+            </tr>  
           </tbody>         
 
           <tfoot>
-          <tr>
+            <tr>
               <td colspan="4">
-              <mfBootstrapPaginator></mfBootstrapPaginator>
+                <mfBootstrapPaginator></mfBootstrapPaginator>
               </td>
-          </tr>
+            </tr>
           </tfoot>
 
         </table>
@@ -130,7 +129,6 @@
         </div>
       </div>    
     </div>
-
   </div>
 
   <div class="card">
@@ -149,33 +147,33 @@
     
         <table class="table table-hover table-stripped" [mfData]="sesiones" #mf="mfDataTable" id="sesiones-list" *ngIf="sesiones && sesiones.length >= 1" [mfRowsOnPage]="rowsOnPage">
           <thead>
-          <tr>
-            <th>Id</th>
-            <th>Inicio</th>
-            <th>Fin</th>                    
-          </tr>
+            <tr>
+              <th>Id</th>
+              <th>Inicio</th>
+              <th>Fin</th>                    
+            </tr>
           </thead>
 
           <tbody>
-          <tr *ngFor="let sesion of mf.data" class="sesion-item">
-            <td>						              
-              {{sesion.id}}              
-            </td>
-            <td>              
-              {{sesion.inicio.timestamp | generateDate}}
-            </td>
-            <td>              
-              {{sesion.fin.timestamp | generateDate}}              
-            </td>                                      
-          </tr>
+            <tr *ngFor="let sesion of mf.data" class="sesion-item">
+              <td>						              
+                {{sesion.id}}              
+              </td>
+              <td>              
+                {{sesion.inicio.timestamp | generateDate}}
+              </td>
+              <td>              
+                {{sesion.fin.timestamp | generateDate}}              
+              </td>                                      
+            </tr>
           </tbody>
 
           <tfoot>
-          <tr>
+            <tr>
               <td colspan="4">
-              <mfBootstrapPaginator></mfBootstrapPaginator>
+                <mfBootstrapPaginator></mfBootstrapPaginator>
               </td>
-          </tr>
+            </tr>
           </tfoot>
             
         </table>

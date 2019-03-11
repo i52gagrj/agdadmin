@@ -5,7 +5,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
-//import { saveAs } from 'file-saver';
 import { DataTableModule } from 'angular2-datatable';
 
 @Component({
@@ -140,34 +139,6 @@ export class DocumentoAdminComponent implements OnInit {
                 console.log(<any>error)
             }
         );
-    }     
-
-    /*descargarDocumento(id, nombre){       
-        this._documentoService.getDocumento(this.token, id).subscribe(            
-            response => {
-                
-                if(!response.status){                    
-                    this.file = response;
-                    saveAs(this.file, nombre);                                        
-                }
-                else{
-                    if(response.code = 405){
-                        console.log("Token caducado. Reiniciar sesión");
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }else{
-                        console.log(response);                        
-                    } 
-                        
-                }               
-            },
-            error => {
-                console.log("AQUÍ!!!");
-                console.log(<any>error);                
-            }
-        );        
-    }*/    
+    }        
     
 }

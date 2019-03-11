@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Modelo } from '../models/modelo';
 import { UserService } from '../services/user.service';
 import { ModeloService } from '../services/modelo.service';
@@ -71,26 +70,6 @@ export class ModeloComponent implements OnInit{
                     this.modelos = response.data;
                     this.token = this._userService.setToken(response.token);
                     this.loading = 'hide';
-
-                    // Total paginas
-                    /*this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
-                    }
-
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
-
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
-                    }*/
                 }
             },
             error => {

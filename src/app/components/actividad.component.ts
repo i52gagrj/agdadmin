@@ -93,25 +93,6 @@ export class ActividadComponent implements OnInit{
 
                     if(response.status == 'success'){
                         this.documentos = response.data;                                                                                                                  
-                        // Total paginas
-                        /*this.pagesdoc = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pagesdoc.push(i);                                                    
-                        }                        
-
-                        // Pagina anterior
-                        if(pagedoc >= 2){
-                            this.pagePrevDoc = (pagedoc - 1);
-                        }else{
-                            this.pagePrevDoc = pagedoc;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(pagedoc < response.total_pages){
-                            this.pageNextDoc = (pagedoc+1);
-                        }else{
-                            this.pageNextDoc = pagedoc;
-                        }*/
                     }
                 }
             },
@@ -148,25 +129,6 @@ export class ActividadComponent implements OnInit{
 
                     if(response.status == 'success'){
                         this.descargas = response.data;                                            
-                        // Total paginas
-                        /*this.pagesdes = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pagesdes.push(i);                        
-                        }
-
-                        // Pagina anterior
-                        if(pagedes >= 2){
-                            this.pagePrevDes = (pagedes - 1);
-                        }else{
-                            this.pagePrevDes = pagedes;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(pagedes < response.total_pages){
-                            this.pageNextDes = (pagedes+1);
-                        }else{
-                            this.pageNextDes = pagedes;
-                        }*/
                     }
                 }
             },
@@ -203,26 +165,6 @@ export class ActividadComponent implements OnInit{
 
                     if(response.status=='success'){
                         this.sesiones = response.data;                                                              
-                                
-                        // Total paginas
-                        /*this.pagesses = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pagesses.push(i);                                                 
-                        }
-
-                        // Pagina anterior
-                        if(pageses >= 2){
-                            this.pagePrevses = (pageses - 1);
-                        }else{
-                            this.pagePrevses = pageses;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(pageses < response.total_pages){
-                            this.pageNextses = (pageses+1);
-                        }else{
-                            this.pageNextses = pageses;
-                        }*/
                     }
                 }
             },

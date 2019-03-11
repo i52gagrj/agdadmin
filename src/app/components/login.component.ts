@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit{
 											window.location.href = '/login';
 										}else{
 											localStorage.setItem('identity', JSON.stringify(this.identity));										
-											window.location.href = '/cliente';
+											window.location.href = '/';
 										}
 									}									
 								}

@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Mensaje } from '../models/mensaje';
 import { UserService } from '../services/user.service';
 import { MensajeService } from '../services/mensaje.service';
@@ -50,37 +49,37 @@ export class MensajeComponent implements OnInit{
 
 	mostrarTodosMensajes(){
         this.cliente = this._userService.getCliente();        
-            if(this.cliente != null){
-                this.id = this.cliente.id;
-            }else{
-                this.id = null;
-            } 
-                        
-            this.loading = 'show';            
-            this._mensajeService.getMensajes(this.token, this.id).subscribe(
-                response => {
-                    if(response.code == 405){
-                        console.log("Token caducado. Reiniciar sesión")
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }
-                    else{ 
-                        this.loading = 'hide';
-                        if(response.token){
-                            this.token = this._userService.setToken(response.token);
-                        }                                                                    
-                        if(response.status == 'success')
-                        {    
-                            this.mensajes = response.data;                                                   
-                        } 
-                    }
-                },
-                error => {
-                    console.log(<any>error);
+        if(this.cliente != null){
+            this.id = this.cliente.id;
+        }else{
+            this.id = null;
+        } 
+                    
+        this.loading = 'show';            
+        this._mensajeService.getMensajes(this.token, this.id).subscribe(
+            response => {
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
                 }
-            );                 
+                else{ 
+                    this.loading = 'hide';
+                    if(response.token){
+                        this.token = this._userService.setToken(response.token);
+                    }                                                                    
+                    if(response.status == 'success')
+                    {    
+                        this.mensajes = response.data;                                                   
+                    } 
+                }
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );                 
     }    
 
     cambiarVisto(id, estado){

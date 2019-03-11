@@ -16,7 +16,7 @@ import { ActividadComponent } from './components/actividad.component';
 import { PruebaComponent } from './components/prueba.component';
  
 const appRoutes: Routes = [
-	{path:'', component: ClienteComponent},
+	{path:'', component: DefaultComponent},
 	{path:'login', component: LoginComponent},
 	{path:'login/:id', component: LoginComponent},
 	{path:'register', component: RegisterComponent},

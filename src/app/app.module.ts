@@ -3,13 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgxPaginationModule } from 'ngx-pagination';
-//import { DataTableModule } from 'angular-4-data-table';
-//import { DataTableResource } from 'angular-4-data-table';
 import { DataTableModule } from 'angular2-datatable';
-//import { DataTableResource } from 'angular2-datatable';
-
 import { routing, appRoutingProviders } from './app.routing';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login.component';
 import { RegisterComponent } from './components/register.component';

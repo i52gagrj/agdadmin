@@ -1,1 +1,23 @@
 <h1>{{title}}</h1>
+<ul>
+
+    <li> 
+        <h2><a [routerLink]="['/documento-admin']">Documentos</a></h2>
+        <h4>Tienes un total de {{documentos_admin}} nuevos documentos </h4>
+    </li>
+
+    <li>
+        <h2><a [routerLink]="['/mensaje-admin']">Mensajes</a></h2>
+        <h4>Tienes un total de {{mensajes_admin}} nuevos mensajes</h4>
+    </li>
+
+    <li>
+        <h2><a [routerLink]="['/cliente']">Clientes</a></h2>
+        <h4>Administras un total de {{clientes_admin}} clientes</h4>
+    </li>    
+
+    <!--<li>
+    <h3>Última conexión</h3>
+    Datos última conexión
+    </li>-->
+</ul>

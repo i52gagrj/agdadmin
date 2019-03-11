@@ -97,4 +97,11 @@ export class UserService{
 		return this._http.post(this.url+'/usuario/new', params, {headers: headers}).map(res => res.json());
 	}	
 
+	returnInfoAdmin(token) {		
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		return this._http.post(this.url+'/returninfoadmin', params, {headers: headers}).map(res => res.json());
+	}		
+
 }	

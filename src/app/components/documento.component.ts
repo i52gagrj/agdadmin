@@ -25,8 +25,6 @@ export class DocumentoComponent implements OnInit {
     public documentos: Array<Documento>;
     public status_documento;
     public pages;
-    public pagePrev;
-    public pageNext;
     public loading;
     public id;
     public documento;
@@ -52,13 +50,7 @@ export class DocumentoComponent implements OnInit {
     }
 
     mostrarTodosDocumentos(){
-        this._route.params.forEach((params: Params) => {
-            let page = +params['page'];
-
-            if(!page){
-                page = 1;
-            }
-            
+        this._route.params.forEach((params: Params) => {           
             if(this.cliente != null){
                 this.id = this.cliente.id;
             }else{
@@ -83,27 +75,7 @@ export class DocumentoComponent implements OnInit {
                                                     
                         if(response.status == 'success')
                         {                           
-                            this.documentos = response.data;
-                                
-                            /*// Total paginas
-                            this.pages = [];
-                            for(let i = 0; i < response.total_pages; i++){
-                                this.pages.push(i);                        
-                            }
-
-                            // Pagina anterior
-                            if(page >= 2){
-                                this.pagePrev = (page - 1);
-                            }else{
-                                this.pagePrev = page;                        
-                            }  
-
-                            // Pagina siguiente
-                            if(page < response.total_pages){
-                                this.pageNext = (page+1);
-                            }else{
-                                this.pageNext = page;
-                            }*/
+                            this.documentos = response.data;                                
                         }    
                     }
                 },

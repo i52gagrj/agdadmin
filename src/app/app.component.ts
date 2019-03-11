@@ -10,6 +10,7 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   public title = 'app works! ';
   public identity;
+  public clienteElegido = null;
   public token;
   public cliente = null;
 
@@ -19,6 +20,7 @@ export class AppComponent {
 
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
+    this.cliente = this._userService.getCliente();
 
   }
 
